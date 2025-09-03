@@ -1,4 +1,31 @@
 
-.fondo-personalizado {
-  background-color: #61891cec;
+:root {
+    --bs-light-gray: #E6E8EB;
+    --bs-deep-navy: #001F3F;
+    --bs-silver: #C0C0C0;
+}
+
+body {
+    background-color: var(--bs-light-gray) !important;
+}
+
+.custom-header {
+    background-color: var(--bs-deep-navy) !important;
+}
+
+.btn-return {
+    background-color: var(--bs-deep-navy) !important;
+    color: white !important;
+    padding: 10px 25px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-return:hover {
+    background-color: var(--bs-silver) !important;
+    color: var(--bs-deep-navy) !important;
 }
