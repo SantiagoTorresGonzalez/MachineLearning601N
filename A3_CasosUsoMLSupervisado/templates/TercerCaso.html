@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEMAS DE RECOMENDACION</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+    <body class="fondo-personalizado text-white"></body>
+    <p class="p-2 text-bg-secondary text-center fw-bold fs-1">Netflix y los sistemas de recomendacion</p>
+
+    <div class="container mt-10 px-0 ">
+
+    <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
+    <!-- Actividad 1 -->
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CASOS DE ÉXITO MACHINE LEARNING SUPERVISADO
+      </button>
+
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/PrimerCaso">Caso uno</a></li>
+        <li><a class="dropdown-item" href="/SegundoCaso">Caso dos</a></li>
+        <li><a class="dropdown-item" href="/TercerCaso">Caso tres</a></li>
+        <li><a class="dropdown-item" href="/CuartoCaso">Caso cuatro</a></li>
+      </ul>
+
+      <div class="d-flex justify-content-center w50000 mt-5">  
+        <div class="bg-secondary text-white p-4 rounded w-50 h-25">
+        <h3>Netflix y los sistemas de recomendacion</h3>
+        <p>
+            Las plataformas de streaming como Netflix afrontaban un problema al comienzo de su concepción, 
+            la gran variedad de contenidos para los usuarios provocaba que tuvieran dificultades para hallar 
+            rápidamente algo que los atrajera. Este exceso de alternativas creaba el riesgo de que los 
+            suscriptores abandonaran la plataforma, ya que podían sentirse abrumados o insatisfechos al no 
+            recibir recomendaciones adecuadas para ellos en la interfaz. Pero esto ha sido algo del pasado, 
+            ya que actualmente, y tal como lo señala El País (2025): “…entre el 75 % y el 80 % del tiempo de 
+            visionado en la plataforma es consecuencia de las recomendaciones que propone a partir de los datos 
+            que manejan sus algoritmos”, lo que demuestra que sin un sistema eficaz de personalización la 
+            retención de clientes se vería gravemente comprometida.
+        </p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center w50000 mt-5">  
+        <div class="bg-secondary text-white p-4 rounded w-50 h-25">
+        <h3>Regresion logsistica y redes neuronales</h3>
+        <p>
+            La forma en la que esta problemática fue mitigada ha sido con la implementación de un 
+            sistema de sugerencias que se basan en la fusión de los algoritmos de la regresión logística 
+            y las redes neuronales, entrenadas con grandes cantidades de datos sobre el comportamiento de 
+            sus usuarios. Como menciona Codificando Bits (2023), la regresión logística: “…permite tomar 
+            una serie de datos y clasificarlos en una de dos posibles categorías o clases.”, Mientras que, 
+            las redes neuronales agregan: “…la transformación de los datos y de aplicar una función de 
+            activación al resultado obtenido.” De esta forma, estos modelos utilizan elementos como el 
+            historial de navegación, el tiempo de reproducción, entre otros, para anticipar que contenido 
+            podría ser de interés para el cliente. 
+        </p>
+        </div>
+      </div><div class="d-flex justify-content-center w50000 mt-5">  
+        <div class="bg-secondary text-white p-4 rounded w-50 h-25">
+        <h3>Otras industrias y beneficios</h3>
+        <p>
+            Pero estos sistemas de recomendaciones no las podemos ver únicamente en el ámbito del 
+            streaming, pues en diferentes sectores como el comercio electrónico, el ámbito musical y el 
+            turismo con Amazon, Spotify y Booking, respectivamente, se aplican los mismos principios. 
+            Cyberclick (2023) menciona que: “…los motores de búsqueda y plataformas de contenido de años 
+            atrás (usaban listas y rankings), sin tener en cuenta los gustos del usuario de forma 
+            individual y la personalización.”, por lo que ahora, la ventaja que ofrece son precisamente 
+            esta manera de transformar tantos datos en recomendaciones personalizadas que enriquecen la 
+            experiencia de los usuarios y la rentabilidad de empresas.
+        </p>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center w50000 mt-5">  
+        <div class="bg-secondary text-white p-4 rounded w-50 h-25">
+        <h3>NETGRAFIA</h3>
+        <p>
+            •	El País. (2025, 30 de agosto). ¿Cómo sabe Netflix lo que quiero ver? El País. https://elpais.com/television/2025-08-30/como-sabe-netflix-lo-que-quiero-ver.html<br>
+            •	Codificando Bits. (2023, 22 de marzo). La Neurona Artificial y la Regresión Logística. Codificando Bits. https://www.codificandobits.com/blog/regresion-logistica-y-neurona-artificial/<br>
+            •	Cyberclick. (2023, 19 de junio). Sistemas de recomendación: qué son y cómo pueden ayudar a tu negocio online. Cyberclick. https://www.cyberclick.es/numerical-blog/sistemas-de-recomendacion-que-son-como-pueden-ayudar-a-tu-negocio-online 
+      </div>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<body>
+    <div class="d-flex justify-content-center">
+    <a href="/" class="btn btn-success position-fixed bottom-0 start-50 translate-middle-x mb-3">VOLVER AL INICIO</a>
+  </div>
+</body>
+</html>
