@@ -20,7 +20,7 @@ def SegundoC():
 @app.route('/TercerCaso')
 def TercerC():
      myname = "Flask"
-     return render_template('TercerC.html',name=myname)
+     return render_template('TercerCaso.html',name=myname)
 
 @app.route('/CuartoCaso')
 def CuartoC():
