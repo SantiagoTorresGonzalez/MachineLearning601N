@@ -1,8 +1,4 @@
-body{  
-    background-color: aliceblue;
-}
 
-h1{
-    color: blue;
-    text-align: center;
+.fondo-personalizado {
+  background-color: #61891cec;
 }
