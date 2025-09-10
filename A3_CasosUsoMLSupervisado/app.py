@@ -64,10 +64,11 @@ def ConcepB():
      myname = "Flask"
      return render_template('ConceptosBasicos.html',name=myname)
 
-@app.route('/EjercicioPractico')
+@app.route('/EjercicioPractico', methods= ["GET", "POST"])
 def EjerP():
-     myname = "Flask"
-     # Si el usuario envía datos en el formulario
+    prediccion = None
+
+    # Si el usuario envía datos en el formulario
     if request.method == "POST":
         distancia = int(request.form["distancia"])
         trafico = int(request.form["trafico"])
@@ -111,7 +112,7 @@ def EjerP():
     grafico=grafico_base64,
     prediccion=prediccion
     )
-     
+
 
 if __name__ == '__main__':
      app.run(debug=True)
