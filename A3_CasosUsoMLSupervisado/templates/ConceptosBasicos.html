@@ -1,66 +1,112 @@
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conceptos básicos</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conceptos básicos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
 </head>
 
 <body class="fondo-personalizado text-white">
 
-  <!-- Encabezado -->
-  <p class="p-2 text-bg-secondary text-center fw-bold fs-1">CONCEPTOS BÁSICOS</p>
+    <p class="p-2 text-bg-secondary text-center fw-bold fs-1">CONCEPTOS BÁSICOS</p>
 
-  <div class="container mt-5 px-0">
-    <!-- Botón desplegable -->
-    <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          A4 - REGRESIÓN LINEAL
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/ConceptosBasicos">Conceptos básicos</a></li>
-          <li><a class="dropdown-item" href="/EjercicioPractico">Ejercicio práctico</a></li>
-        </ul>
-      </div>
-    </div>
+  <div class="container mt-5 px-0">
+        <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          A4 - REGRESIÓN LINEAL
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="/ConceptosBasicos">Conceptos básicos</a></li>
+          <li><a class="dropdown-item" href="/EjercicioPractico">Ejercicio práctico</a></li>
+        </ul>
+      </div>
+    </div>
 
-    <!-- Tarjetas en cascada -->
-    <div class="container mt-5">
+        <div class="container mt-5">
 
-      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50">
-        <h3>DEFINICIÓN DE REGRESIÓN LINEAL</h3>
-        <p>Introducir texto</p>
-      </div>
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50 card-hover">
+        <h3>¿QUE ES LA REGRESIÓN LINEAL?</h3>
+        <p>La regresión lineal es un método estadístico que intenta caracterizar y anticipar como una 
+          variable se relaciona con otra u otras, esto a partir de una línea recta para su aproximación. 
+          La página de Wikipedia (s.f), señala que es “un modelo matemático utilizado para aproximar la 
+          relación de dependencia entre una variable dependiente Y, m variables independientes 𝑋𝑖… y un 
+          término aleatorio 𝜀”, lo que dicho en otras palabras, su fórmula es y=a+bX (o y=mx+b) donde a 
+          representa el punto de intersección, es decir, el valor que tiene y cuando x=0, b, por su parte, 
+          es la pendiente o la cantidad en que varía y, por cada unidad que se modifique x, y en conjunto 
+          permiten prever el valor de y, a partir de un valor especifico que posea x.</p>
+        <p>Con este modelo, la variable que deseamos explicar (dependiente) se expresa en función de una o 
+          varias variables que la afecten (independientes) y su meta es identificar la línea que mejor se 
+          adapte a los datos para poder realizar pronósticos acertados lo que la ha llevado a ser una técnica 
+          utilizada de manera frecuente en áreas variadas como la economía, las ciencias sociales y la 
+          ingeniería, porque ofrece una forma precisa de comprender como las modificaciones que se le hagan 
+          a una variable, afectan a otra. Por ejemplo, se puede emplear para estimar el valor de una 
+          vivienda teniendo en cuenta su tamaño, la cantidad de habitaciones y su localización.</p>
+      </div>
 
-      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50">
-        <h3>LINEALIDAD</h3>
-        <p>Introducir texto</p>
-      </div>
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50 card-hover">
+        <h3>LINEALIDAD</h3>
+        <p>El supuesto de linealidad es fundamental en la regresión lineal, ya que indica que la conexión 
+          entre la variable independiente y la dependiente debe ser aproximadamente en forma de una línea 
+          recta. DataCamp (2024) explica que: “la relación entre las variables independiente y dependiente 
+          debe ser lineal. Si la relación no es lineal, el modelo no la captará bien”, lo que sugiere que, 
+          de manera general, un cambio constante en la variable que esta prediciendo generará un cambio en 
+          la variable de resultado. Por ejemplo, si se miden como varían las ventas según un presupuesto 
+          publicitario, se esta anticipando que cada unidad que se siga invirtiendo en publicidad influya 
+          de manera consistente en las ventas de la empresa.</p>
+      </div>
 
-      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50">
-        <h3>INDEPENDENCIA</h3>
-        <p>Introducir texto</p>
-      </div>
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50 card-hover">
+        <h3>INDEPENDENCIA</h3>
+        <p>En el documento ‘Supuestos de regresión lineal’ del Instituto Tecnológico de Tijuana, Aguilar, J. 
+          (2022) habla de que en el supuesto de independencia: “Los residuos son independientes. En 
+          particular, no existe correlación entre residuos consecutivos en datos de series de tiempo”. 
+          Por lo que se está indicando que los errores del modelo no deben estar relacionados entre sí; 
+          es decir, cada error debe ser individual y no depender de otros errores, lo que garantiza fiabilidad 
+          de las observaciones y evita que el modelo registre patrones no reales, algo que es crucial en datos 
+          de series temporales. Por ejemplo, si se quiere analizar el rendimiento de un grupo académico, el 
+          error de la nota de un estudiante no debe contar con ninguna correlación con la de otro estudiante.</p>
+      </div>
 
-      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50">
-        <h3>HOMOCEDASTICIDAD</h3>
-        <p>Introducir texto</p>
-      </div>
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50 card-hover">
+        <h3>HOMOCEDASTICIDAD</h3>
+        <p>En el mismo documento de ‘Supuestos de regresión lineal’ del Instituto Tecnológico de Tijuana, 
+          Aguilar, J. (2022) menciona que la regresión lineal requiere que, la varianza de los errores sea 
+          constante en todos los valores de la variable independiente. Es aquí cuando comenzamos a hablar de 
+          homocedasticidad, la cual se refiere a lo anteriormente dicho, y cuando no se cumple y la variación 
+          de los errores no cambia, se utiliza el termino heterocedasticidad, lo que influye en la validez de 
+          las pruebas estadísticas. Un ejemplo lo podemos observar al analizar los ingresos según la 
+          experiencia laboral: si las proyecciones son mas exactas para empleados con poca experiencia y mas 
+          variables con aquellos que tengan una alta experiencia, se está vulnerando este supuesto.</p>
+      </div>
 
-      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50">
-        <h3>NORMALIDAD DEL ERROR</h3>
-        <p>Introducir texto</p>
-      </div>
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50 card-hover">
+        <h3>NORMALIDAD DEL ERROR</h3>
+        <p>La normalidad del error significa que los residuos generados por el modelo de regresión deberían 
+          tener una distribución que se asemeje a una normal, con media cero y varianza constante, sin 
+          embargo, este requisito no es esencial para calcular los coeficientes del modelo, pero si es 
+          crucial para llevar a cabo pruebas estadísticas fiables y para interpretar correctamente los datos. 
+          Statologos (2024) nos dice que, para comprobar una forma habitual de comprobar este supuesto es con 
+          un grafico QQ: “si los puntos del gráfico forman aproximadamente una línea diagonal recta, se cumple 
+          el supuesto de normalidad”. Como ejemplo, si quisiéramos determinar si el efecto de los años de 
+          experiencia con respecto a los ingresos es estadísticamente importante, se asume que los errores 
+          están bien distribuidos. </p>
+      </div>
 
-    </div>
-  </div>
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50 card-hover">
+        <h3>Bibliografia</h3>
+        <p>Wikipedia. (s.f.). Regresión lineal. Wikipedia, la enciclopedia libre. Recuperado el 9 de septiembre de 2025, de https://es.wikipedia.org/wiki/Regresi%C3%B3n_lineal</p>
+        <p>DataCamp. (2024). Regresión lineal simple: Todo lo que necesitas saber. DataCamp en español. Recuperado el 9 de septiembre de 2025, de https://www.datacamp.com/es/tutorial/simple-linear-regression</p>
+        <p>Aguilar J. Instituto Tecnológico de Tijuana. (2022). Supuestos de regresión lineal. En Probabilidad y Estadística. Recuperado el 10 de septiembre de 2025, de https://www.studocu.com/es-mx/document/instituto-tecnologico-de-tijuana/probabilidad-y-estadistica/supuestos-de-regresion-linea/23327581</p>
+        <p>•  Statologos. (2024). Los cuatro supuestos de la regresión lineal. Recuperado el 10 de septiembre de 2025, de https://statologos.com/lineal-regression-assumptions </p>
+      </div>
 
-  <!-- Botón volver al inicio -->
-  <a href="/" class="btn-return position-fixed bottom-0 start-0 m-3">VOLVER AL INICIO</a>
+    </div>
+  </div>
 
-  <!-- Scripts Bootstrap -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <a href="/" class="btn-return position-fixed bottom-0 start-0 m-3">VOLVER AL INICIO</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

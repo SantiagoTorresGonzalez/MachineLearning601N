@@ -1,8 +1,8 @@
-
 :root {
     --bs-light-gray: #E6E8EB;
     --bs-deep-navy: #001F3F;
     --bs-silver: #C0C0C0;
+    --bs-dark-gray: #495057;
 }
 
 body {
@@ -28,4 +28,21 @@ body {
 .btn-return:hover {
     background-color: var(--bs-silver) !important;
     color: var(--bs-deep-navy) !important;
+}
+
+.card-hover {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card-hover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
+}
+
+.shadow-hover:hover {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
 }
