@@ -68,7 +68,64 @@
             </div>
         </div>
       
+<div class="container py-5">
 
+    <h1 class="mb-4 text-center">Predicción de Tiempo de Entrega</h1>
+
+    <!-- Explicación -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Explicación del Dataset</h5>
+            <p class="card-text">
+                El dataset contiene datos de <strong>distancia (km)</strong>, <strong>tráfico promedio</strong> 
+                y el <strong>tiempo de entrega</strong>. Estos valores permiten entrenar un modelo 
+                de <em>regresión lineal</em> para predecir el tiempo de entrega a partir de la distancia y el tráfico.
+            </p>
+        </div>
+    </div>
+
+    <!-- Tabla de datos -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Datos de Entrenamiento</h5>
+            {{ tablas | safe }}
+        </div>
+    </div>
+
+    <!-- Gráfico -->
+    <div class="card mb-4 shadow-sm text-center">
+        <div class="card-body">
+            <h5 class="card-title">Gráfico de Entrenamiento</h5>
+            <img src="data:image/png;base64,{{ grafico }}" class="img-fluid" alt="Gráfico de entrenamiento">
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Ingresar Nuevos Datos</h5>
+            <form method="POST" action="/EjercicioPractico">
+                <div class="mb-3">
+                    <label for="distancia" class="form-label">Distancia (km)</label>
+                    <input type="number" step="any" class="form-control" name="distancia" required>
+                </div>
+                <div class="mb-3">
+                    <label for="trafico" class="form-label">Tráfico promedio</label>
+                    <input type="number" step="any" class="form-control" name="trafico" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Predecir</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Resultado -->
+    {% if prediccion is not none %}
+    <div class="alert alert-success text-center">
+        <h4>Tiempo de entrega estimado: {{ prediccion | round(2) }} minutos</h4>
+    </div>
+    {% endif %}
+
+</div>
 
 
 
