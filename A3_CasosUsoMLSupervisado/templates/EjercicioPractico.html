@@ -13,7 +13,6 @@
     <div class="container mt-10 px-0 ">
 
     <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
-    <!-- Actividad 1 -->
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             REGRESIÓN LINEAL
@@ -25,7 +24,7 @@
 
       <div class="d-flex justify-content-center w50000 mt-5">  
 
-        <div class="bg-secondary text-white p-4 rounded w-50 h-25">
+        <div class="bg-secondary text-white p-4 rounded w-50 h-25 card-hover">
             <h3>EXPLICACIÓN DEL SCRIPT</h3>
                 <ul>
                     <li>
@@ -72,8 +71,7 @@
 
     <h1 class="mb-4 text-center">Predicción de Tiempo de Entrega</h1>
 
-    <!-- Explicación -->
-    <div class="card mb-4 shadow-sm">
+    <div class="card mb-4 shadow-sm card-hover">
         <div class="card-body">
             <h5 class="card-title">Explicación del Dataset</h5>
             <p class="card-text">
@@ -84,24 +82,21 @@
         </div>
     </div>
 
-    <!-- Tabla de datos -->
-    <div class="card mb-4 shadow-sm">
+    <div class="card mb-4 shadow-sm card-hover">
         <div class="card-body">
             <h5 class="card-title">Datos de Entrenamiento</h5>
             {{ tablas | safe }}
         </div>
     </div>
 
-    <!-- Gráfico -->
-    <div class="card mb-4 shadow-sm text-center">
+    <div class="card mb-4 shadow-sm text-center card-hover">
         <div class="card-body">
             <h5 class="card-title">Gráfico de Entrenamiento</h5>
             <img src="data:image/png;base64,{{ grafico }}" class="img-fluid" alt="Gráfico de entrenamiento">
         </div>
     </div>
 
-    <!-- Formulario -->
-    <div class="card mb-4 shadow-sm">
+    <div class="card mb-4 shadow-sm card-hover">
         <div class="card-body">
             <h5 class="card-title">Ingresar Nuevos Datos</h5>
             <form method="POST" action="/EjercicioPractico">
@@ -113,12 +108,11 @@
                     <label for="trafico" class="form-label">Tráfico promedio</label>
                     <input type="number" step="any" class="form-control" name="trafico" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Predecir</button>
+                <button type="submit" class="btn btn-primary w-100 shadow-hover">Predecir</button>
             </form>
         </div>
     </div>
 
-    <!-- Resultado -->
     {% if prediccion is not none %}
     <div class="alert alert-success text-center">
         <h4>Tiempo de entrega estimado: {{ prediccion | round(2) }} minutos</h4>
@@ -126,14 +120,6 @@
     {% endif %}
 
 </div>
-
-
-
-
-
-
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <body>
