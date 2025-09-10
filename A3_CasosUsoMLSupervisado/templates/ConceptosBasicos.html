@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conceptos básicos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+
+<body class="fondo-personalizado text-white">
+
+  <!-- Encabezado -->
+  <p class="p-2 text-bg-secondary text-center fw-bold fs-1">CONCEPTOS BÁSICOS</p>
+
+  <div class="container mt-5 px-0">
+    <!-- Botón desplegable -->
+    <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          A4 - REGRESIÓN LINEAL
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="/ConceptosBasicos">Conceptos básicos</a></li>
+          <li><a class="dropdown-item" href="/EjercicioPractico">Ejercicio práctico</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Tarjetas en cascada -->
+    <div class="container mt-5">
+
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50">
+        <h3>DEFINICIÓN DE REGRESIÓN LINEAL</h3>
+        <p>Introducir texto</p>
+      </div>
+
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50">
+        <h3>LINEALIDAD</h3>
+        <p>Introducir texto</p>
+      </div>
+
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50">
+        <h3>INDEPENDENCIA</h3>
+        <p>Introducir texto</p>
+      </div>
+
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50">
+        <h3>HOMOCEDASTICIDAD</h3>
+        <p>Introducir texto</p>
+      </div>
+
+      <div class="bg-secondary text-white p-4 rounded w-50 mb-4 mx-auto ms-50">
+        <h3>NORMALIDAD DEL ERROR</h3>
+        <p>Introducir texto</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Botón volver al inicio -->
+  <a href="/" class="btn-return position-fixed bottom-0 start-0 m-3">VOLVER AL INICIO</a>
+
+  <!-- Scripts Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio práctico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+    <body class="fondo-personalizado text-white"></body>
+    <p class="p-2 text-bg-secondary text-center fw-bold fs-1">Verificación del estado del trafico</p>
+
+    <div class="container mt-10 px-0 ">
+
+    <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
+    <!-- Actividad 1 -->
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            REGRESIÓN LINEAL
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/ConceptosBasicos">Conceptos básicos</a></li>
+            <li><a class="dropdown-item" href="/EjercicioPractico">Ejercicio práctico</a></li>
+        </ul>
+
+      <div class="d-flex justify-content-center w50000 mt-5">  
+
+        <div class="bg-secondary text-white p-4 rounded w-50 h-25">
+            <h3>EXPLICACIÓN DEL SCRIPT</h3>
+                <ul>
+                    <li>
+                        <strong>Creación de variables:</strong> 
+                            El script desarrollado sigue el flujo básico de un modelo de regresión lineal. 
+                            Dirigido al hallazgo de tiempo entrega promedio según el tráfico y la distancia, 
+                            el código después de las librerías ofrece un diccionario de 3 keys las cuales 
+                            ofrecen los datos a trabajar.
+                    </li>
+
+                    <li>
+                        <strong>Entrenamiento:</strong> 
+                            El script desarrollado sigue el flujo básico de un modelo de regresión lineal. 
+                            Dirigido al hallazgo de tiempo entrega promedio según el tráfico y la distancia, 
+                            se importan las librerías de pandas y LinearRegression para poder realizar la predicción. 
+                            Por medio de las funciones <code>dataframe()</code>, se halla el df el cual sirve para 
+                            mapear todos los datos presentes, luego se hallan los datos por cada key para sacar 
+                            el resultado, por medio de la variable modelo y se acomoda a las variables propuestas 
+                            por la función <code>fit</code> de scikit-learn con variables x e y que son en x distancia 
+                            y tráfico y en y el tiempo de entrega.
+                    </li>
+
+                    <li>
+                        <strong>Predicción:</strong> 
+                            La función <code>CalcularTiempoProm</code> en donde la variable <code>result</code> guarda 
+                            el valor general que obtuvo la práctica, gracias a nuevos valores de distancia y tráfico 
+                            retornando la variable de tiempo promedio.
+                    </li>
+                    
+                
+                    <li>
+                        <strong>Gráfico de los datos de entrenamiento:</strong> 
+                            Eate se hace primero mostrando los datos reales en un diagrama de dispersión (puntos en un plano), 
+                            luego se entrena un modelo de regresión lineal que aprende la relación entre las variables, 
+                            y finalmente se dibuja la línea generada por el modelo.Con esto podemos comparar los valores 
+                            observados con los valores predichos y permite visualizar qué tan bien se ajusta el modelo 
+                            y entender la precisión de las predicciones.
+                    </li>
+                </ul>
+            </div>
+        </div>
+      
+
+
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<body>
+    <a href="/" class="btn-return position-fixed bottom-0 start-0 m-3">VOLVER AL INICIO</a>
+</body>
+</html>

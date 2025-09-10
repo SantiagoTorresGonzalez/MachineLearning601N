@@ -27,5 +27,15 @@ def CuartoC():
      myname = "Flask"
      return render_template('CuartoCaso.html',name=myname)
 
+@app.route('/ConceptosBasicos')
+def ConcepB():
+     myname = "Flask"
+     return render_template('ConceptosBasicos.html',name=myname)
+
+@app.route('/EjercicioPractico')
+def EjerP():
+     myname = "Flask"
+     return render_template('EjercicioPractico.html',name=myname)
+
 if __name__ == '__main__':
      app.run(debug=True)
