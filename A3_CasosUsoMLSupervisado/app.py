@@ -31,6 +31,11 @@ def CuartoC():
     myname = "Flask"
     return render_template('CuartoCaso.html', name=myname)
 
+@app.route('/ConceptosBasicos')
+def ConcepB():
+    myname = "Flask"
+    return render_template('ConceptosBasicos.html', name=myname)
+
 @app.route('/EjercicioPractico', methods=['GET', 'POST'])
 def EjercicioPractico():
     prediction = None
