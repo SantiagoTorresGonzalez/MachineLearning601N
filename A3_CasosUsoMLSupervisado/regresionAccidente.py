@@ -9,7 +9,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 
 # Carga de datos
-data = pd.read_excel('C:/Users/sasv2/Downloads/datos.xlsx')
+data = pd.read_excel('datos.xlsx')
 
 # Explorar el conjunto de datos
 print(data.head())
