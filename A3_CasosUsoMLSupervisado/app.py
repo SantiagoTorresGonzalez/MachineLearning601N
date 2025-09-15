@@ -63,6 +63,15 @@ def plot_png():
     buf.seek(0)
     return send_file(buf, mimetype='image/png')
 
+@app.route('/ConceptosBasicos2')
+def ConceptosBasicos2():
+    myname = "Flask"
+    return render_template('ConceptosBasicos2.html', name=myname)
+
+@app.route('/EjercicioPractico2')
+def EjercicioPractico2():
+    myname = "Flask"
+    return render_template('/EjercicioPractico2.html', name=myname)
 
 if __name__ == '__main__':
     app.run(debug=True)
