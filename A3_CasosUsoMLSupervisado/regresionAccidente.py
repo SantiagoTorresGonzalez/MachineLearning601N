@@ -7,42 +7,48 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
+from pathlib import Path
+import joblib
 
-# Carga de datos
-data = pd.read_excel('datos.xlsx')
+# --- Rutas base ---
+BASE_DIR = Path(__file__).resolve().parent
+file_path = BASE_DIR / "dataset" / "datos.xlsx"
 
-# Explorar el conjunto de datos
+# --- Carga de datos ---
+data = pd.read_excel(file_path)
+
+# Explorar el conjunto de datos (solo para debug/inspección)
 print(data.head())
 print(data.info())
 print(data.describe())
 
-# Transformar la variable dependiente a 0 y 1
-y = data['Accidente'].map({'Sí': 1, 'No': 0})
+# Variable dependiente
+y = data['Accidente'].map({'Si': 1, 'No': 0})
 
-# Separación de variables independientes
+# Variables independientes
 x = data.drop('Accidente', axis=1)
 
-# Convertir variables categóricas a dummies (OneHotEncoding)
+# OneHotEncoding para variables categóricas
 x = pd.get_dummies(x, columns=['Clima', 'EstadoVia'], drop_first=True)
 
-# División del dataset en conjunto de entrenamiento y prueba (80% Entrenamiento, 20% prueba) con estratificación
+# División entrenamiento / prueba
 x_entrena, x_prueba, y_entrena, y_prueba = train_test_split(
     x, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# Estandarización de datos (solo columnas numéricas)
+# Escalador
 scaler = StandardScaler()
 X_entrena_scaled = scaler.fit_transform(x_entrena)
 X_prueba_scaled = scaler.transform(x_prueba)
 
-
-# Crear modelo y entrenarlo
-
+# Modelo
 logistic_Model = LogisticRegression()
 logistic_Model.fit(X_entrena_scaled, y_entrena)
 
+# Guardamos columnas del modelo (importante para alinear datos nuevos)
+columnas_modelo = x.columns
 
-# Función evaluate()
+# --- Funciones auxiliares ---
 def evaluate(model, X_test, y_test):
     """Calcula métricas y genera imagen de matriz de confusión"""
     y_pred = model.predict(X_test)
@@ -61,8 +67,6 @@ def evaluate(model, X_test, y_test):
     return acc, report, conf
 
 
-# Función predict_label()
-
 def predict_label(model, scaler, features, threshold=0.5):
     """Recibe un DataFrame de características y retorna 'Sí'/'No' y probabilidad"""
     X_scaled = scaler.transform(features)
@@ -70,22 +74,20 @@ def predict_label(model, scaler, features, threshold=0.5):
     label = 'Sí' if prob >= threshold else 'No'
     return label, prob
 
-# Evaluar modelo
+
+# --- Evaluación ---
 accuracy_val, report_val, conf_val = evaluate(logistic_Model, X_prueba_scaled, y_prueba)
 print(f'Exactitud del modelo: {accuracy_val*100:.2f}%')
 
+# --- Guardar modelo, scaler y columnas ---
+joblib.dump(logistic_Model, BASE_DIR / "modelo.pkl")
+joblib.dump(scaler, BASE_DIR / "scaler.pkl")
+joblib.dump(columnas_modelo, BASE_DIR / "columnas.pkl")
 
-# Predicción de ejemplo
+print(" Modelo, scaler y columnas guardados exitosamente.")
 
-# Crear un DataFrame con un registro de ejemplo
-example = pd.DataFrame({
-    'Velocidad': [80],
-    'EdadConductor': [30],
-    'Clima_Nublado': [0],
-    'Clima_Lluvioso': [1],
-    'EstadoVia_Mojada': [0],
-    'EstadoVia_Resbaladiza': [1]
-})
-
-label, prob = predict_label(logistic_Model, scaler, example)
-print(f'Predicción: {label}, Probabilidad: {prob:.2f}')
+# --- Exportar al importar este archivo ---
+# Esto permite que app.py solo tenga que importar, sin reentrenar nada
+logistic_Model = joblib.load(BASE_DIR / "modelo.pkl")
+scaler = joblib.load(BASE_DIR / "scaler.pkl")
+columnas_modelo = joblib.load(BASE_DIR / "columnas.pkl")

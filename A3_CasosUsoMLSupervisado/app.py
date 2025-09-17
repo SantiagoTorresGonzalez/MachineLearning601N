@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, send_file
+import pandas as pd
 import io
 import matplotlib.pyplot as plt
-import prediccionTrafico  # tu script.py con modelo, CalcularTiempoProm(...) y crear_fig()
+import prediccionTrafico
+from regresionAccidente import logistic_Model, scaler, columnas_modelo, predict_label
 
 app = Flask(__name__)
 
@@ -52,11 +54,10 @@ def EjercicioPractico():
 
     return render_template('EjercicioPractico.html', prediction=prediction, distancia=distancia, trafico=trafico)
 
-
-# Ruta que devuelve la imagen PNG generada por script.crear_fig()
+# Esta ruta devuelve la imagen de la matriz en .png
 @app.route('/plot.png')
 def plot_png():
-    fig = prediccionTrafico.crear_fig()  # crear_fig() debe estar en script.py
+    fig = prediccionTrafico.crear_fig() 
     buf = io.BytesIO()
     fig.savefig(buf, format='png', bbox_inches='tight')
     plt.close(fig)
@@ -68,10 +69,39 @@ def ConceptosBasicos2():
     myname = "Flask"
     return render_template('ConceptosBasicos2.html', name=myname)
 
-@app.route('/EjercicioPractico2')
+@app.route("/EjercicioPractico2")
 def EjercicioPractico2():
-    myname = "Flask"
-    return render_template('/EjercicioPractico2.html', name=myname)
+    return render_template("EjercicioPractico2.html")
+
+
+@app.route("/predecir", methods=["POST"])
+def predecir():
+    # Obtener datos del formulario
+    velocidad = float(request.form["velocidad"])
+    edad = float(request.form["edad"])
+    clima = request.form["clima"]
+    estado_via = request.form["estado_via"]
+
+    # Crear DataFrame con los datos ingresados
+    input_data = pd.DataFrame({
+        "Velocidad": [velocidad],
+        "EdadConductor": [edad],
+        "Clima": [clima],
+        "EstadoVia": [estado_via]
+    })
+
+    # OneHotEncoding con las mismas columnas que el modelo
+    input_data = pd.get_dummies(input_data, columns=["Clima", "EstadoVia"])
+    input_data = input_data.reindex(columns=columnas_modelo, fill_value=0)
+
+    # Predicción
+    label, prob = predict_label(logistic_Model, scaler, input_data)
+
+    return render_template(
+        "EjercicioPractico2.html",
+        prediccion=label,
+        probabilidad=f"{prob*100:.2f}"
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)
