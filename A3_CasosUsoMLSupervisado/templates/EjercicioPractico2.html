@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio práctico Regresión logística</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body class="fondo-personalizado text-white">
+
+    <p class="p-2 text-bg-secondary text-center fw-bold fs-1">PREDICCIÓN DE ACCIDENTE DE TRÁNSITO</p>
+
+    <div class="container mt-10 px-0 ">
+
+        <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
+            
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    A5- REGRESIÓN LOGÍSTICA
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/ConceptosBasicos2">Conceptos básicos</a></li>
+                    <li><a class="dropdown-item" href="/EjercicioPractico2">Ejercicio práctico</a></li>
+                </ul>
+            </div>
+
+    <hr class="border border-light border-2 opacity-75 my-5">
+
+    <div class="custom-card">
+        <h3>Descripción del Dataset</h3>
+        <ul>
+            <li><b>Velocidad:</b> número entre 10 y 130 km/h.</li>
+            <li><b>Edad:</b> número entre 16 y 70 años.</li>
+            <li><b>Clima:</b> Caluroso, Frío, Granizo, Lluvioso, Neblina, Nieve, Nublado, Soleado, Tormenta.</li>
+            <li><b>Estado de la vía:</b> Bacheada, Congelada, Desgastada, Deteriorada, Encharcada, Mojada, Obstruida, Polvorienta, Resbaladiza, Seca.</li>
+            <li><b>Accidente:</b> <span class="text-danger">No</span> (negativa) / <span class="text-success">Sí</span> (positiva).</li>
+        </ul>
+    </div>
+
+    <div class="custom-card">
+        <h3>Métricas de Evaluación</h3>
+
+        <p class="text-center"><strong>Exactitud:</strong> {{ accuracy }}%</p>
+
+        <h4>Reporte de Clasificación</h4>
+            {% include 'clasificacion.html' %}
+
+        <h4>Matriz de Confusión</h4>
+        <div class="text-center"></div>
+            <img src="{{ url_for('static', filename='confusion_matrix.png') }}" 
+                class="img-fluid rounded border border-light" 
+                style="max-width:400px;" alt="Matriz de Confusión">
+        </div>
+    </div>
+
+     <div class="custom-card w-50 mx-auto">
+        <h3>Formulario de Predicción</h3>
+        <form action="/predecir" method="post" class="bg-secondary p-4 rounded">
+            <div class="mb-3">
+                <label for="velocidad" class="form-label">Velocidad (km/h)</label>
+                <input type="number" class="form-control" id="velocidad" name="velocidad" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="edad" class="form-label">Edad del Conductor</label>
+                <input type="number" class="form-control" id="edad" name="edad" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="clima" class="form-label">Clima</label>
+                <select class="form-select" id="clima" name="clima" required>
+                    <option value="caluroso">Caluroso</option>
+                    <option value="frío">Frío</option>
+                    <option value="granizo">Granizo</option>
+                    <option value="lluvioso">Lluvioso</option>
+                    <option value="neblina">Neblina</option>
+                    <option value="nieve">Nieve</option>
+                    <option value="nublado">Nublado</option>
+                    <option value="soleado">Soleado</option>
+                    <option value="tormenta">Tormenta</option>
+                </select>
+            </div>
+        
+            <div class="mb-3">
+                <label for="estado_via" class="form-label">Estado de la Vía</label>
+                <select class="form-select" id="estado_via" name="estado_via" required>
+                    <option value="bacheada">Bacheada</option>
+                    <option value="congelada">Congelada</option>
+                    <option value="desgastada">Desgastada</option>
+                    <option value="deteriorada">Deteriorada</option>
+                    <option value="encharcada">Encharcada</option>
+                    <option value="mojada">Mojada</option>
+                    <option value="obstruida">Obstruida</option>
+                    <option value="polvorienta">Polvorienta</option>
+                    <option value="resbaladiza">Resbaladiza</option>
+                    <option value="seca">Seca</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-light w-100">Predecir</button>
+        </form>
+
+        {% if prediccion %}
+        <div class="alert alert-info text-center mt-4 fs-3">
+            <strong>Predicción:</strong> {{ prediccion }} <br>
+            <span class="fs-5">Probabilidad: {{ probabilidad }}%</span>
+        </div>
+            {% endif %}
+        </div>
+        
+    </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <a href="/" class="btn btn-secondary position-fixed bottom-0 start-0 m-3">VOLVER AL INICIO</a>
+</body>
+</html>
