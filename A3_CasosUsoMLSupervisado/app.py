@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, send_file
 import pandas as pd
 import io
+import os
 import matplotlib.pyplot as plt
 import prediccionTrafico
 from regresionAccidente import logistic_Model, scaler, columnas_modelo, predict_label
 
 app = Flask(__name__)
 
-# Rutas que ya tenías
 @app.route('/')
 def index():
     myname = "Flask"
@@ -71,7 +71,10 @@ def ConceptosBasicos2():
 
 @app.route("/EjercicioPractico2")
 def EjercicioPractico2():
-    return render_template("EjercicioPractico2.html")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(BASE_DIR, "static", "accuracy.txt"), "r") as f:
+        accuracy = f.read().strip()
+    return render_template("EjercicioPractico2.html", accuracy=accuracy)
 
 
 @app.route("/predecir", methods=["POST"])

@@ -46,3 +46,45 @@ body {
 .shadow-hover:hover {
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
 }
+
+.custom-card {
+    background-color: var(--bs-dark-gray);   /* Fondo gris oscuro*/
+    color: white;                            /* Texto blanco */
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+
+    /* Centrado automático */
+    width: 75%;              
+    margin-left: auto;       
+    margin-right: auto;      
+
+    /* Sombras */
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.2);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.custom-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.3);
+}
+
+/* Títulos dentro de cards */
+.custom-card h3,
+.custom-card h4 {
+    color: #ffc107; 
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.custom-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.custom-card ul li::before {
+    content: "✔ ";
+    color: #ffc107;
+    font-weight: bold;
+}

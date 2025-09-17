@@ -79,6 +79,25 @@ def predict_label(model, scaler, features, threshold=0.5):
 accuracy_val, report_val, conf_val = evaluate(logistic_Model, X_prueba_scaled, y_prueba)
 print(f'Exactitud del modelo: {accuracy_val*100:.2f}%')
 
+# Guardar exactitud -> static/accuracy.txt
+with open(BASE_DIR / "static" / "accuracy.txt", "w") as f:
+    f.write(f"{accuracy_val*100:.2f}")
+
+# Guardar reporte de clasificación -> templates/clasificacion.html
+report_df = pd.DataFrame(report_val).transpose()
+report_html = report_df.to_html(classes='table table-bordered table-sm text-white', border=0)
+with open(BASE_DIR / "templates" / "clasificacion.html", "w", encoding="utf-8") as f:
+    f.write(report_html)
+
+# Guardar matriz de confusión -> static/confusion_matrix.png
+plt.figure(figsize=(6, 5))
+sns.heatmap(conf_val, annot=True, fmt='d', cmap='Blues', cbar=False,
+            xticklabels=['Predicho No', 'Predicho Sí'],
+            yticklabels=['Real No', 'Real Sí'])
+plt.title("Matriz de Confusión")
+plt.savefig(BASE_DIR / "static" / "confusion_matrix.png")
+plt.close()
+
 # --- Guardar modelo, scaler y columnas ---
 joblib.dump(logistic_Model, BASE_DIR / "modelo.pkl")
 joblib.dump(scaler, BASE_DIR / "scaler.pkl")
