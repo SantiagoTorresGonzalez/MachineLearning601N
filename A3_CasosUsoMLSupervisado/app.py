@@ -4,6 +4,7 @@ import io
 import os
 import matplotlib.pyplot as plt
 import prediccionTrafico
+import randomForest
 from regresionAccidente import logistic_Model, scaler, columnas_modelo, predict_label
 
 app = Flask(__name__)
@@ -105,6 +106,28 @@ def predecir():
         prediccion=label,
         probabilidad=f"{prob*100:.2f}"
     )
+
+@app.route("/diabetes", methods=["GET", "POST"])
+def Diabetes():
+    resultado = None
+    if request.method == "POST":
+        edad = float(request.form["edad"])
+        imc = float(request.form["imc"])
+        glucosa = float(request.form["glucosa"])
+        presion = float(request.form["presion"])
+        historial = request.form["historial"]  # "Sí" o "No"
+
+        # Usar directamente el modelo y encoders de randomForest.py
+        # Esto asume que randomForest.py tiene: bosque, le_fam, le_diag
+        historial_num = randomForest.le_fam.transform([historial.strip()])[0]
+
+        features = np.array([[edad, imc, glucosa, presion, historial_num]])
+        pred = randomForest.bosque.predict(features)[0]
+
+        resultado = randomForest.le_diag.inverse_transform([pred])[0]
+
+    return render_template("diabetes.html", prediction=resultado)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
