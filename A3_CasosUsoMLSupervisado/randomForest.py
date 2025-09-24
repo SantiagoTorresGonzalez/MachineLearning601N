@@ -9,7 +9,7 @@ import seaborn as sns
 from sklearn.ensemble import RandomForestClassifier
 
 #Importación del dataframe (Excel en este caso)
-datos = pd.read_excel('datos/dataArbol.xlsx')
+datos = pd.read_excel('dataset/dataArbol.xlsx')
 
 #Limpiar strings
 datos["HistorialFamiliar"] = datos["HistorialFamiliar"].str.strip()
