@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, send_file
 import pandas as pd
+import numpy as np
 import io
 import os
 import matplotlib.pyplot as plt
 import prediccionTrafico
 import randomForest
 from regresionAccidente import logistic_Model, scaler, columnas_modelo, predict_label
+import randomForest
 
 app = Flask(__name__)
 
@@ -77,16 +79,14 @@ def EjercicioPractico2():
         accuracy = f.read().strip()
     return render_template("EjercicioPractico2.html", accuracy=accuracy)
 
-
 @app.route("/predecir", methods=["POST"])
 def predecir():
-    # Obtener datos del formulario
+
     velocidad = float(request.form["velocidad"])
     edad = float(request.form["edad"])
     clima = request.form["clima"]
     estado_via = request.form["estado_via"]
 
-    # Crear DataFrame con los datos ingresados
     input_data = pd.DataFrame({
         "Velocidad": [velocidad],
         "EdadConductor": [edad],
@@ -94,11 +94,9 @@ def predecir():
         "EstadoVia": [estado_via]
     })
 
-    # OneHotEncoding con las mismas columnas que el modelo
     input_data = pd.get_dummies(input_data, columns=["Clima", "EstadoVia"])
     input_data = input_data.reindex(columns=columnas_modelo, fill_value=0)
 
-    # Predicción
     label, prob = predict_label(logistic_Model, scaler, input_data)
 
     return render_template(
@@ -106,6 +104,11 @@ def predecir():
         prediccion=label,
         probabilidad=f"{prob*100:.2f}"
     )
+
+@app.route('/ConceptosBasicosRandomForest')
+def ConceptosBasicosRandomForest():
+    myname = "Flask"
+    return render_template('ConceptosBasicosRandomForest.html', name=myname)
 
 @app.route("/diabetes", methods=["GET", "POST"])
 def Diabetes():

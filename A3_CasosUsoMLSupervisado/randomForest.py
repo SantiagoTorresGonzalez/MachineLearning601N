@@ -7,9 +7,13 @@ from sklearn import tree
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 from sklearn.ensemble import RandomForestClassifier
+from pathlib import Path
 
-#Importación del dataframe (Excel en este caso)
-datos = pd.read_excel('dataset/dataArbol.xlsx')
+BASE_DIR = Path(__file__).resolve().parent
+file_path = BASE_DIR / "dataset" / "dataArbol.xlsx"
+
+# --- Carga de datos ---
+datos = pd.read_excel(file_path)
 
 #Limpiar strings
 datos["HistorialFamiliar"] = datos["HistorialFamiliar"].str.strip()
