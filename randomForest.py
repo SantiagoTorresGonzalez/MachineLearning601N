@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
 from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score, roc_curve, auc
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import roc_curve, auc
+from sklearn.tree import plot_tree
 
 # --- Carga de datos ---
 BASE_DIR = Path(__file__).resolve().parent
@@ -48,7 +48,7 @@ bosque.fit(X_train, y_train)
 # --- Evaluación ---
 y_pred = bosque.predict(X_test)
 acc = accuracy_score(y_test, y_pred)
-accuracy_val = round(acc * 100, 2)   # Variable global exportable
+accuracy_val = round(acc * 100, 2)  # Variable global exportable
 
 # Guardar archivo de accuracy
 with open(BASE_DIR / "static" / "accuracy_diabetes.txt", "w") as f:
@@ -72,10 +72,8 @@ plt.title("Matriz de Confusión - Diabetes")
 plt.savefig(BASE_DIR / "static" / "confusion_matrix_diabetes.png", bbox_inches="tight")
 plt.close()
 
-# roc en static
+# Guardar ROC en static
 y_prob = bosque.predict_proba(X_test)[:, 1]
-
-    # Calcular curva ROC
 fpr, tpr, _ = roc_curve(y_test, y_prob)
 roc_auc = auc(fpr, tpr)
 
@@ -87,6 +85,21 @@ plt.ylabel("Sensibilidad (TPR)")
 plt.title("Curva ROC - Random Forest")
 plt.legend()
 plt.savefig(BASE_DIR / "static" / "roc_diabetes.png", bbox_inches="tight")
+plt.close()
+
+# --- Guardar árbol binario del primer árbol ---
+arbol = bosque.estimators_[0]  # Tomamos el primer árbol
+plt.figure(figsize=(20, 10))
+plot_tree(
+    arbol,
+    feature_names=X.columns,
+    class_names=le_diag.classes_,
+    filled=True,
+    rounded=True,
+    fontsize=10
+)
+plt.title("Árbol Binario del Random Forest")
+plt.savefig(BASE_DIR / "static" / "arbol_binario_diabetes.png", bbox_inches="tight")
 plt.close()
 
 # --- Función predict_label() para predicciones individuales ---
