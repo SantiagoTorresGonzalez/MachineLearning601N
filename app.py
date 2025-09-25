@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_file
 import pandas as pd
 import numpy as np
 import io
+import base64
 import os
 import matplotlib.pyplot as plt
 import prediccionTrafico
@@ -113,6 +114,8 @@ def ConceptosBasicosRandomForest():
 @app.route("/diabetes", methods=["GET", "POST"])
 def Diabetes():
     resultado = None
+    graph_url = None
+
     if request.method == "POST":
         edad = float(request.form["edad"])
         imc = float(request.form["imc"])
@@ -120,16 +123,27 @@ def Diabetes():
         presion = float(request.form["presion"])
         historial = request.form["historial"]  # "Sí" o "No"
 
-        # Usar directamente el modelo y encoders de randomForest.py
-        # Esto asume que randomForest.py tiene: bosque, le_fam, le_diag
+        # --- Predicción con tu modelo ---
         historial_num = randomForest.le_fam.transform([historial.strip()])[0]
-
         features = np.array([[edad, imc, glucosa, presion, historial_num]])
         pred = randomForest.bosque.predict(features)[0]
-
         resultado = randomForest.le_diag.inverse_transform([pred])[0]
 
-    return render_template("diabetes.html", prediction=resultado)
+        # --- Crear gráfica con los datos ingresados ---
+        plt.figure(figsize=(5, 3))
+        valores = [edad, imc, glucosa, presion]
+        etiquetas = ["Edad", "IMC", "Glucosa", "Presión"]
+        plt.bar(etiquetas, valores, color="skyblue")
+        plt.title("Valores del paciente")
+
+        # Convertir la gráfica a base64
+        img = io.BytesIO()
+        plt.savefig(img, format="png")
+        img.seek(0)
+        graph_url = base64.b64encode(img.getvalue()).decode()
+        plt.close()
+
+    return render_template("diabetes.html", prediction=resultado, graph_url=graph_url)
 
 
 if __name__ == '__main__':

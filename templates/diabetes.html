@@ -64,6 +64,14 @@
                     <h4 class="mb-0">Resultado: {{ prediction }}</h4>
                 </div>
                 {% endif %}
+
+                {% if graph_url %}
+                <div class="text-center mt-4">
+                    <h5>Visualización de los datos ingresados</h5>
+                    <img src="data:image/png;base64,{{ graph_url }}" 
+                         class="img-fluid rounded shadow" alt="Gráfica de datos del paciente">
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
