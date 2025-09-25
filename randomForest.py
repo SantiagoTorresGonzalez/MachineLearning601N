@@ -1,71 +1,95 @@
-# Importación de librerías
+# randomForest.py
+# Entrenamiento del modelo Random Forest para Diabetes Tipo II
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import LabelEncoder
-from sklearn import tree
-from sklearn.metrics import confusion_matrix
 import seaborn as sns
-from sklearn.ensemble import RandomForestClassifier
 from pathlib import Path
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import tree
+
+# --- Rutas base ---
+BASE_DIR = Path(__file__).resolve().parent
 
 # --- Carga de datos ---
-BASE_DIR = Path(__file__).resolve().parent
 file_path = BASE_DIR / "dataset" / "dataArbol.xlsx"
 datos = pd.read_excel(file_path)
 
-# Limpiar strings
+# Limpieza de variables categóricas
 datos["HistorialFamiliar"] = datos["HistorialFamiliar"].str.strip()
 datos["Diagnostico"] = datos["Diagnostico"].str.strip()
 
-# Separación de variables
-x = datos.drop("Diagnostico", axis=1)
+# Separación X / y
+X = datos.drop("Diagnostico", axis=1)
 y = datos["Diagnostico"]
 
-# Variables categóricas (Codificación)
+# Codificación de variables categóricas
 le_fam = LabelEncoder()
-x["HistorialFamiliar"] = le_fam.fit_transform(x["HistorialFamiliar"])
+X["HistorialFamiliar"] = le_fam.fit_transform(X["HistorialFamiliar"])
 
 le_diag = LabelEncoder()
 y = le_diag.fit_transform(y)
 
-# Creación del bosque aleatorio con la función RandomForestClassifier y entrenamiento
+# División train/test
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# Entrenamiento del RandomForest
 bosque = RandomForestClassifier(
     n_estimators=100,
     criterion="gini",
     max_features="sqrt",
     bootstrap=True,
     max_samples=2/3,
-    oob_score=True
+    oob_score=True,
+    random_state=42
 )
-bosque.fit(x, y)
+bosque.fit(X_train, y_train)
 
-# --- Funciones para gráficas ---
-def plot_confusion_matrix():
-    """Genera la figura de la matriz de confusión."""
-    y_pred = bosque.predict(x)
-    cm = confusion_matrix(y, y_pred, labels=np.unique(y))
-    
-    fig, ax = plt.subplots(figsize=(6, 5))
-    sns.heatmap(
-        cm, annot=True, fmt="d", cmap="Blues",
-        xticklabels=le_diag.classes_,
-        yticklabels=le_diag.classes_,
-        ax=ax
+# --- Métricas ---
+y_pred = bosque.predict(X_test)
+acc = accuracy_score(y_test, y_pred)
+accuracy_val = round(acc * 100, 2)
+
+report_dict = classification_report(y_test, y_pred, output_dict=True)
+reporte_df = pd.DataFrame(report_dict).transpose()
+
+# Guardar exactitud en static
+with open(BASE_DIR / "static" / "accuracy_diabetes.txt", "w") as f:
+    f.write(f"{accuracy_val:.2f}")
+
+# Guardar reporte como HTML en templates
+with open(BASE_DIR / "templates" / "clasificacion_diabetes.html", "w", encoding="utf-8") as f:
+    f.write(
+        reporte_df.to_html(
+            classes="table table-striped table-bordered text-white", border=0
+        )
     )
-    ax.set_xlabel("Predicción")
-    ax.set_ylabel("Real")
-    ax.set_title("Matriz de Confusión - Random Forest")
-    return fig
+
+# Guardar matriz de confusión en static
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(6, 4))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
+            xticklabels=le_diag.classes_,
+            yticklabels=le_diag.classes_)
+plt.xlabel("Predicho")
+plt.ylabel("Real")
+plt.title("Matriz de Confusión - Random Forest")
+plt.savefig(BASE_DIR / "static" / "confusion_matrix_diabetes.png", bbox_inches="tight")
+plt.close()
 
 
+# --- Función para dibujar un árbol representativo ---
 def plot_tree_example():
-    """Genera la figura de un árbol del Random Forest."""
-    estimator = bosque.estimators_[0]  # Tomamos un árbol
+    estimator = bosque.estimators_[0]
     fig, ax = plt.subplots(figsize=(15, 10))
     tree.plot_tree(
         estimator,
-        feature_names=x.columns,
+        feature_names=X.columns,
         class_names=le_diag.classes_,
         filled=True,
         rounded=True,
@@ -74,13 +98,3 @@ def plot_tree_example():
     )
     ax.set_title("Ejemplo de Árbol del Random Forest")
     return fig
-
-
-# --- Prueba rápida ---
-if __name__ == "__main__":
-    # Predicción de ejemplo
-    entry = np.array([[50, 24.7, 108.53, 101, le_fam.transform(["No"])[0]]])
-    pred = bosque.predict(entry)
-    print("Predicción:", le_diag.inverse_transform(pred))
-    print("Precisión: ", bosque.score(x, y))
-    print("OOB score: ", bosque.oob_score_)

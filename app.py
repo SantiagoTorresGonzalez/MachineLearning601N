@@ -104,58 +104,49 @@ def predecir():
         probabilidad=f"{prob*100:.2f}"
     )
 
-# ---------------- RANDOM FOREST - DIABETES ----------------
+# ---------------- CLASIFICACION - DIABETES ----------------
 @app.route("/diabetes", methods=["GET", "POST"])
 def Diabetes():
     resultado = None
-    graph_url = None
+    probabilidad = None
+    interpretacion = None
 
     if request.method == "POST":
-        # --- Obtener datos del formulario ---
         edad = float(request.form["edad"])
         imc = float(request.form["imc"])
         glucosa = float(request.form["glucosa"])
         presion = float(request.form["presion"])
-        historial = request.form["historial"]  # "Sí" o "No"
+        historial = request.form["historial"]
 
-        # --- Codificar historial ---
         try:
             historial_num = randomForest.le_fam.transform([historial.strip()])[0]
         except ValueError:
-            return render_template(
-                "diabetes.html",
-                prediction="Error: valor de historial no reconocido",
-                graph_url=None
-            )
+            return render_template("diabetes.html",
+                                   prediction="Error: valor de historial no reconocido")
 
-        # --- Preparar entrada y predecir ---
+        # Features formateados para el modelo
         features = np.array([[edad, imc, glucosa, presion, historial_num]])
-        pred = randomForest.bosque.predict(features)[0]
+        
+        # Probabilidad de la clase positiva
+        proba = randomForest.bosque.predict_proba(features)[0]
+        prob_diabetes = round(proba[1], 4)  # 1 corresponde a "Diabetes"
+
+        threshold = 0.4
+        pred = 1 if prob_diabetes >= threshold else 0
         resultado = randomForest.le_diag.inverse_transform([pred])[0]
 
-        # --- Crear gráfica de los valores del paciente ---
-        plt.figure(figsize=(5, 3))
-        valores = [edad, imc, glucosa, presion]
-        etiquetas = ["Edad", "IMC", "Glucosa", "Presión"]
-        plt.bar(etiquetas, valores, color="skyblue")
-        plt.title("Valores del paciente")
+        probabilidad = prob_diabetes
+        interpretacion = "Con threshold=0.4, el modelo se vuelve más sensible (detecta más diabéticos), Pero a cambio pierde precisión en los sanos (personas sin diabetes)."
 
-        img = io.BytesIO()
-        plt.savefig(img, format="png")
-        img.seek(0)
-        graph_url = base64.b64encode(img.getvalue()).decode()
-        plt.close()
+    # leer exactitud desde randomForest (ya precomputada)
+    return render_template(
+        "diabetes.html",
+        prediction=resultado,
+        probabilidad=probabilidad,
+        interpretacion=interpretacion,
+        accuracy=randomForest.accuracy_val
+    )
 
-    return render_template("diabetes.html", prediction=resultado, graph_url=graph_url)
-
-@app.route("/plot_confusion")
-def plot_confusion():
-    fig = randomForest.plot_confusion_matrix()
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches='tight')
-    buf.seek(0)
-    plt.close(fig)
-    return send_file(buf, mimetype='image/png')
 
 @app.route("/plot_tree")
 def plot_tree():
