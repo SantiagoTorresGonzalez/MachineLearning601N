@@ -28,11 +28,23 @@
         </div>
     </div>
 
-    <!-- Formulario de Predicción -->
+    <!-- Árbol y Matriz de Confusión -->
     <div class="container mt-4">
         <div class="card shadow-sm">
             <div class="card-body">
-                <form method="post" action="/diabetes">
+
+                <div class="text-center mt-3">
+                    <h5>Ejemplo de Árbol del Random Forest</h5>
+                    <img src="{{ url_for('plot_tree') }}" class="img-fluid rounded shadow" alt="Árbol del Random Forest">
+                </div>
+
+                <div class="text-center mt-4">
+                    <h5>Matriz de Confusión del Modelo</h5>
+                    <img src="{{ url_for('plot_confusion') }}" class="img-fluid rounded shadow" alt="Matriz de confusión">
+                </div>
+
+                <!-- Formulario de Predicción -->
+                <form method="post" action="/diabetes" class="mt-4">
                     <div class="mb-3">
                         <label for="edad" class="form-label">Edad</label>
                         <input type="number" step="1" class="form-control" id="edad" name="edad" required>
@@ -68,6 +80,7 @@
                 </div>
                 {% endif %}
 
+                <!-- Gráfica de los datos ingresados -->
                 {% if graph_url %}
                 <div class="text-center mt-4">
                     <h5>Visualización de los datos ingresados</h5>
@@ -76,11 +89,6 @@
                 </div>
                 {% endif %}
 
- 
-                <div class="text-center mt-4">
-                    <h5>Matriz de Confusión del Modelo</h5>
-                    <img src="{{ url_for('plot_confusion') }}" class="img-fluid rounded shadow" alt="Matriz de confusión">
-                </div>
             </div>
         </div>
     </div>

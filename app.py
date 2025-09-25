@@ -157,6 +157,15 @@ def plot_confusion():
     plt.close(fig)
     return send_file(buf, mimetype='image/png')
 
+@app.route("/plot_tree")
+def plot_tree():
+    fig = randomForest.plot_tree_example()
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches='tight')
+    buf.seek(0)
+    plt.close(fig)
+    return send_file(buf, mimetype='image/png')
+
 # ---------------- EJECUCIÓN ----------------
 if __name__ == '__main__':
     app.run(debug=True)
