@@ -38,7 +38,7 @@
                 <li><b>Glucosa en ayunas:</b> numérica, requiere escalado.</li>
                 <li><b>Presión arterial:</b> numérica, requiere escalado.</li>
                 <li><b>Historial familiar:</b> categórica (Si/No).</li>
-                <li><b>Diabetes:</b> <span class="text-danger">No</span> 
+                <li><b>Diabetes:</b> <span class="text-danger">No/</span> 
                     <span class="text-success">Sí</span></li>
             </ul>
         </div>
@@ -57,6 +57,13 @@
                 <img src="{{ url_for('static', filename='confusion_matrix_diabetes.png') }}" 
                     class="img-fluid rounded border border-light" 
                     style="max-width:400px;" alt="Matriz de Confusión">
+            </div>
+
+            <h4 class="mt-4">Curva ROC</h4>
+            <div class="text-center">
+                <img src="{{ url_for('static', filename='roc_diabetes.png') }}"
+                    class="img-fluid rounded border border-light"
+                    style="max-width:400px;" alt="Curva ROC">
             </div>
         </div>
 

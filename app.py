@@ -121,41 +121,27 @@ def Diabetes():
         try:
             historial_num = randomForest.le_fam.transform([historial.strip()])[0]
         except ValueError:
-            return render_template("diabetes.html",
-                                   prediction="Error: valor de historial no reconocido")
+            return render_template("diabetes.html", prediction="Error: valor de historial no reconocido")
 
-        # Features formateados para el modelo
         features = np.array([[edad, imc, glucosa, presion, historial_num]])
-        
-        # Probabilidad de la clase positiva
-        proba = randomForest.bosque.predict_proba(features)[0]
-        prob_diabetes = round(proba[1], 4)  # 1 corresponde a "Diabetes"
 
-        threshold = 0.4
-        pred = 1 if prob_diabetes >= threshold else 0
-        resultado = randomForest.le_diag.inverse_transform([pred])[0]
-
-        probabilidad = prob_diabetes
+        label, prob = randomForest.predict_label(features, threshold=0.5)
+        resultado = label
+        probabilidad = f"{prob:.4f}"    
         interpretacion = "Con threshold=0.4, el modelo se vuelve más sensible (detecta más diabéticos), Pero a cambio pierde precisión en los sanos (personas sin diabetes)."
 
-    # leer exactitud desde randomForest (ya precomputada)
+    # Leer exactitud desde archivo
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(BASE_DIR, "static", "accuracy_diabetes.txt"), "r") as f:
+        accuracy = f.read().strip()
+
     return render_template(
         "diabetes.html",
         prediction=resultado,
         probabilidad=probabilidad,
         interpretacion=interpretacion,
-        accuracy=randomForest.accuracy_val
+        accuracy=accuracy
     )
-
-
-@app.route("/plot_tree")
-def plot_tree():
-    fig = randomForest.plot_tree_example()
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches='tight')
-    buf.seek(0)
-    plt.close(fig)
-    return send_file(buf, mimetype='image/png')
 
 # ---------------- EJECUCIÓN ----------------
 if __name__ == '__main__':
