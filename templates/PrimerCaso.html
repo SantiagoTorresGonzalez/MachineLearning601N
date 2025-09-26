@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMAIL y LEVITY</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+    <body class="fondo-personalizado text-white"></body>
+    <p class="p-2 text-bg-secondary text-center fw-bold fs-1">Gmail y Levity: El uso de ML para la filtración y creación de e-mails</p>
+
+    <div class="container mt-10 px-0 ">
+
+    <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
+    <!-- Actividad 1 -->
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CASOS DE ÉXITO MACHINE LEARNING SUPERVISADO
+      </button>
+
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/PrimerCaso">Caso uno</a></li>
+        <li><a class="dropdown-item" href="/SegundoCaso">Caso dos</a></li>
+        <li><a class="dropdown-item" href="/TercerCaso">Caso tres</a></li>
+        <li><a class="dropdown-item" href="/CuartoCaso">Caso cuatro</a></li>
+      </ul>
+
+      <div class="d-flex justify-content-center w50000 mt-5">  
+        <div class="bg-secondary text-white p-4 rounded w-50 h-25">
+        <h3>Gmail y Levity: El uso de ML para la filtración y creación de e-mails</h3>
+        <p>
+            Para la filtración de correos, el mayor problema presentado es la presencia de sobrecarga de información,
+            seguridad en cada correo debido al phishing, baja productividad y poca adaptación a grandes cargas de texto. 
+            Siendo un proceso de carácter masivo y de un alto control. Para el caso de Levity, este hace referencia a la creación
+            de correos electrónicos por medio de clasificación de textos acorde al tipo de correo que se requiera.
+        </p>
+        </div>
+      </div>
+      
+      <div class="d-flex justify-content-center w50000 mt-5">  
+        <div class="bg-secondary text-white p-4 rounded w-50 h-25">
+        <h3>LA SOLUCIÓN AL FILTRADO</h3>
+        <p>
+            La solución de este problema radica en algoritmos como Naive Bayes que consiste en la clasificación de texto 
+            por medio de la probabilidad, la cual se basa en la razón entre la condición y el resultado esperado, sobre las ocasiones 
+            posibles de éxito y fracaso sumadas. Tal como lo explica el teorema de Bayes, donde filtra cada palabra donde si se repite, 
+            empieza a asociar palabras como gratis, dinero, etc. Con correos no deseados, obteniendo una efectividad del 90-95% si 
+            no se enviaban otros caracteres, ya que aquí empezaba a obtener fallos. Es conocida por ser una función dentro de gmail para dividir los correos en los tres tipos de bandeja de entrada, 
+            promociones, social y notificaciones, etc. 
+
+            Además de la detección de correos maliciosos este uso también es común para la gestión y envío de correos a personas pertinentes y que estén libres de malware. 
+            También el filtrado no es necesario de google, IBM AI Team (2024) añade que Levity usa clasificación por medio de algoritmos de clasificación de texto 
+            con el fin de crear respuestas personalizadas y acordes a la categoría del correo en sí.
+
+        </p>
+        </div>
+      </div><div class="d-flex justify-content-center w50000 mt-5">  
+        <div class="bg-secondary text-white p-4 rounded w-50 h-25">
+        <h3>LOS FILTROS UTILIZADOS Y SU EFECTIVIDAD</h3>
+        <p>
+            Los filtros utilizados pueden ser usados frecuentemente para el spam, Bostoganashvili (2025) explica que los filtros 
+            son en su mayoría de descarga local, alojados en servidores u en la nube para finalizar en los basados en software. Las diferencias 
+            entre estos tipos de filtrado son el alto costo en el caso del filtro local pero alta confidencialidad, alto costo de alquiler de espacio 
+            debido a su fácil escalabilidad del espacio requerido junto a una función interrumpida debido a su alta compatibilidad entre varios dispositivos y su filtro en la entrega 
+            del correo que cuando este se encuentre en la red.
+
+        </p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center w50000 mt-5">  
+        <div class="bg-secondary text-white p-4 rounded w-50 h-25">
+        <h3>NETGRAFIA</h3>
+        <p>
+            - Bostoganashvili, K. (2025, 18 junio). Spam filters explained [2025]. Mailtrap. https://mailtrap-io.translate.goog/blog/spam-filters/?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=wa <br>
+            - Team, AI IBM. (2024, October 15). Casos de uso del machine learning. Ibm.com. https://www.ibm.com/mx-es/think/topics/machine-learning-use-cases 
+        </p>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<body>
+    <a href="/" class="btn-return position-fixed bottom-0 start-0 m-3">VOLVER AL INICIO</a>
+</body>
+</html>

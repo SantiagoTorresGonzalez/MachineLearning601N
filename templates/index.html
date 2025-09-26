@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Machine Learning</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body class="bg-light">
+
+    <header class="p-4 custom-header text-white text-center shadow">
+        <h1 class="fw-bold fs-1 m-0">MACHINE LEARNING PORTAFOLIO</h1>
+    </header>
+
+    <main class="d-flex flex-column align-items-center mt-5">
+
+        <section class="bg-white shadow rounded p-4 w-50 mb-4">
+            <h2 class="text-center">ML 601N</h2>
+            <div class="list">
+                <p><strong>Integrantes:</strong></p>
+                <ul class="list-unstyled">
+                    <li>Santiago Andrés Sánchez Vargas</li>
+                    <li>Jeisson Arley Calderón Posada</li>
+                    <li>Santiago Enrique Torres Gonzalez</li>
+                </ul>
+            </div>
+            <div class="list">
+                <p><strong>Gestor del conocimiento:</strong></p>
+                <ul class="list-unstyled">
+                    <li>Edison Gustavo Cañón Varela</li>
+                </ul>
+            </div>
+            <p>Universidad de Cundinamarca - Extensión Chía</p>
+        </section>
+
+        <section class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                A3- CASOS DE ÉXITO MACHINE LEARNING SUPERVISADO
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/PrimerCaso">Caso uno</a></li>
+                <li><a class="dropdown-item" href="/SegundoCaso">Caso dos</a></li>
+                <li><a class="dropdown-item" href="/TercerCaso">Caso tres</a></li>
+                <li><a class="dropdown-item" href="/CuartoCaso">Caso cuatro</a></li>
+            </ul>
+
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                A4- REGRESIÓN LINEAL
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/ConceptosBasicos">Conceptos básicos</a></li>
+                <li><a class="dropdown-item" href="/EjercicioPractico">Ejercicio práctico</a></li>
+            </ul>
+
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                A5- REGRESIÓN LOGÍSTICA
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/ConceptosBasicos2">Conceptos básicos</a></li>
+                <li><a class="dropdown-item" href="/EjercicioPractico2">Ejercicio práctico</a></li>
+            </ul>
+
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                A7- Tipos de Algoritmos de Clasificación
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/ConceptosBasicosRandomForest">Conceptos básicos</a></li>
+                <li><a class="dropdown-item" href="/diabetes">Ejercicio práctico</a></li>
+            </ul>
+
+        </section>
+
+    </main>
+
+    <a href="/" class="btn-return position-fixed bottom-0 start-0 m-3">VOLVER AL INICIO</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
