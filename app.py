@@ -161,6 +161,6 @@ def gridworld_run():
     result = run_training(episodes)
     return jsonify(result)
 
-# ---------------- EJECUCIÓN ----------------
+
 if __name__ == '__main__':
     app.run(debug=True)
