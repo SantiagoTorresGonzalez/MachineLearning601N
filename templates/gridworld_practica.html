@@ -3,129 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio práctico: GridWorld (Q-Learning)</title>
+    <title>GridWorld – Almacén 10x10 (Q-Learning)</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
 </head>
 
 <body class="fondo-personalizado text-white">
 
+    <!-- TITULO PRINCIPAL (NO SE CAMBIA) -->
     <p class="p-2 text-bg-secondary text-center fw-bold fs-1">APRENDIZAJE POR REFUERZO - GRIDWORLD</p>
 
     <div class="container mt-10 px-0">
 
-        <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
-            
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    A12 - APRENDIZAJE POR REFUERZO
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/gridworld/teoria">Conceptos básicos</a></li>
-                    <li><a class="dropdown-item" href="/gridworld/practica">Ejercicio práctico</a></li>
-                </ul>
+        <!-- MENÚ DESPLEGABLE (NO SE CAMBIA) -->
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                A12 - APRENDIZAJE POR REFUERZO
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/gridworld/teoria">Conceptos básicos</a></li>
+                <li><a class="dropdown-item" href="/gridworld/practica">Ejercicio práctico</a></li>
+            </ul>
+        </div>
+
+
+        <hr class="border border-light border-2 opacity-75 my-5">
+
+
+        <!-- DESCRIPCIÓN DEL ENTORNO -->
+        <div class="custom-card">
+            <h3>Descripción del Entorno GridWorld (Almacén 10×10)</h3>
+            <ul>
+                <li><b>Tamaño:</b> 10x10</li>
+                <li><b>Estado inicial:</b> posición (0,0)</li>
+                <li><b>Meta (zona de despacho):</b> posición (9,9)</li>
+                <li><b>Obstáculos:</b> Estantes ubicados en posiciones fijas</li>
+                <li><b>Zonas con congestión:</b> Penalizan el paso</li>
+                <li><b>Acciones:</b> Arriba, Abajo, Izquierda, Derecha</li>
+                <li><b>Recompensas:</b>  
+                    <ul>
+                        <li>-0.1 por movimiento</li>
+                        <li>-1 por congestión</li>
+                        <li>-5 por chocar con muro</li>
+                        <li>-10 por intentar pasar por estante</li>
+                        <li>+20 al llegar a la meta</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- CONTROL DE ENTRENAMIENTO -->
+        <div class="custom-card">
+
+            <h3 class="text-center">Entrenamiento del Agente (Q-Learning)</h3>
+
+            <div class="row text-center my-3">
+
+                <div class="col">
+                    <label class="form-label">Episodios</label>
+                    <input type="number" id="episodes" value="100" min="50" max="2000" class="form-control w-75 mx-auto">
+                </div>
+
+                <div class="col">
+                    <label class="form-label">Tasa de exploración (ε)</label>
+                    <input type="number" id="epsilon" value="0.2" min="0.01" max="1" step="0.01" class="form-control w-75 mx-auto">
+                </div>
+
             </div>
 
-    <hr class="border border-light border-2 opacity-75 my-5">
+            <div class="text-center my-3">
+                <button onclick="runTraining()" class="btn btn-light px-4 py-2 fs-5">▶ Iniciar Entrenamiento</button>
+            </div>
 
+            <hr class="border border-light opacity-50">
 
-    <!-- Descripción del entorno -->
-    <div class="custom-card">
-        <h3>Descripción del Entorno GridWorld</h3>
-        <ul>
-            <li><b>Tamaño:</b> 4x4</li>
-            <li><b>Estado inicial:</b> posición (0,0)</li>
-            <li><b>Meta:</b> posición (3,3)</li>
-            <li><b>Acciones:</b> Arriba, Abajo, Izquierda, Derecha</li>
-            <li><b>Recompensas:</b> -0.01 por movimiento, +1 al llegar a la meta</li>
-        </ul>
-    </div>
+            <h4 class="text-center mt-4">Indicadores del Agente</h4>
 
+            <div class="text-center">
+                <p><b>Episodios completados:</b> <span id="episodesDone">0</span></p>
+                <p><b>Recompensa promedio:</b> <span id="avgReward">0</span></p>
+            </div>
 
-    <!-- ENTRENAMIENTO -->
-    <div class="custom-card">
-
-        <h3 class="text-center">Entrenamiento del Agente (Q-Learning)</h3>
-
-        <div class="text-center my-3">
-            <label class="form-label fs-5">Número de episodios</label>
-            <input type="number" id="episodes" value="50" min="10" max="500" class="form-control w-25 mx-auto">
         </div>
 
-        <div class="text-center">
-            <button onclick="runTraining()" class="btn btn-light px-4 py-2 fs-5">Iniciar Entrenamiento</button>
-        </div>
 
-        <hr class="border border-light opacity-50">
+        <!-- GRÁFICO / TRAZADO DEL AGENTE -->
+        <div class="custom-card">
 
-        <h4 class="text-center mt-4">Resultados del Entrenamiento</h4>
+            <h3>Trayectoria del Agente</h3>
 
-        <div class="table-responsive">
-            <table id="results" class="table table-dark table-striped text-center mt-3">
-                <thead>
-                    <tr>
-                        <th>Episodio</th>
-                        <th>Pasos</th>
-                        <th>Recompensa total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
+            <p>Visualización de la política aprendida y el recorrido sobre el almacén.</p>
+
+            <canvas id="gridCanvas" width="500" height="500" class="border bg-secondary"></canvas>
+
+            <div class="text-center mt-3">
+                <button onclick="testAgent()" class="btn btn-success m-2">▶ Probar Política</button>
+                <button onclick="resetGrid()" class="btn btn-danger m-2">↺ Reiniciar Vista</button>
+            </div>
+
         </div>
 
     </div>
 
+    <!-- BOTÓN DE VOLVER AL INICIO (NO SE CAMBIA) -->
+    <a href="/" class="btn btn-secondary position-fixed bottom-0 start-0 m-3">
+        VOLVER AL INICIO
+    </a>
 
-    <!-- Trayectoria -->
-    <div class="custom-card">
-        <h3>Vista de la Política Aprendida</h3>
-
-        <p>Al finalizar el entrenamiento puedes visualizar la trayectoria o imprimir la política aprendida del agente.</p>
-
-        <div id="policyPreview" class="border p-3 rounded bg-secondary text-center">
-            <i>La trayectoria se mostrará aquí después del entrenamiento.</i>
-        </div>
-    </div>
-
-
-    </div> 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
+
+    <!-- ================== SCRIPTS ================== -->
     <script>
+        let gridSize = 10;
+        let cellSize = 50;
+        let canvas = document.getElementById("gridCanvas");
+        let ctx = canvas.getContext("2d");
+
+        function drawGrid(path = []) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+
+                    ctx.strokeStyle = "black";
+                    ctx.strokeRect(j * cellSize, i * cellSize, cellSize, cellSize);
+
+                    // Obstáculos
+                    const obstacles = [
+                        [2,3],[2,4],[2,5],
+                        [5,1],[5,2],[5,3],
+                        [7,7],[7,8]
+                    ];
+                    if (obstacles.some(o => o[0] === i && o[1] === j)) {
+                        ctx.fillStyle = "brown";
+                        ctx.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    }
+
+                    // Congestión
+                    const congestion = [
+                        [4,4],[4,5],[4,6],
+                        [6,3],[6,4]
+                    ];
+                    if (congestion.some(c => c[0] === i && c[1] === j)) {
+                        ctx.fillStyle = "orange";
+                        ctx.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    }
+
+                    // Meta
+                    if (i === 9 && j === 9) {
+                        ctx.fillStyle = "green";
+                        ctx.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    }
+                }
+            }
+
+            // Dibujar la trayectoria aprendida
+            ctx.fillStyle = "cyan";
+            path.forEach(p => {
+                ctx.fillRect(p[1] * cellSize + 15, p[0] * cellSize + 15, 20, 20);
+            });
+        }
+
+        drawGrid();
+
+
+        // ------------------ ENTRENAMIENTO ------------------
+
         function runTraining() {
             const episodes = document.getElementById("episodes").value;
+            const epsilon = document.getElementById("epsilon").value;
 
             fetch("/gridworld/run", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: "episodes=" + episodes
+                body: "episodes=" + episodes + "&epsilon=" + epsilon
             })
             .then(res => res.json())
             .then(data => {
-                const tbody = document.querySelector("#results tbody");
-                tbody.innerHTML = "";
-
-                data.forEach(row => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${row.episode}</td>
-                            <td>${row.steps}</td>
-                            <td>${row.reward}</td>
-                        </tr>`;
-                });
-
-                document.getElementById("policyPreview").innerHTML =
-                    "<b>Entrenamiento completado. Política lista para usar.</b>";
+                document.getElementById("episodesDone").innerText = episodes;
+                document.getElementById("avgReward").innerText = data.average_reward;
+                alert("Entrenamiento completado.");
             });
         }
-    </script>
 
-    <a href="/" class="btn btn-secondary position-fixed bottom-0 start-0 m-3">
-        VOLVER AL INICIO
-    </a>
+
+        // ------------------ PRUEBA DEL AGENTE ------------------
+
+        function testAgent() {
+            fetch("/gridworld/test")
+            .then(res => res.json())
+            .then(data => {
+                drawGrid(data.path);
+            });
+        }
+
+        function resetGrid() {
+            drawGrid();
+        }
+    </script>
 
 </body>
 </html>

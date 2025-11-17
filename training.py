@@ -1,16 +1,17 @@
 from gridworld import GridWorld
 from agent import QAgent
+import numpy as np
 
-def run_training(episodes=50):
-    env = GridWorld(size=4)
-    agent = QAgent(state_dim=4, action_dim=4)
+def run_training(episodes=200):
+    env = GridWorld(size=10)
+    agent = QAgent(grid_size=10)
 
-    history = []
+    rewards_history = []
+    eps_history = []
 
     for ep in range(episodes):
         state = env.reset()
         done = False
-        steps = 0
         total_reward = 0
 
         while not done:
@@ -19,13 +20,17 @@ def run_training(episodes=50):
             agent.update(state, action, reward, next_state)
 
             state = next_state
-            steps += 1
             total_reward += reward
 
-        history.append({
-            "episode": ep + 1,
-            "steps": steps,
-            "reward": round(total_reward, 3)
-        })
+        # Reducir la exploración al final de cada episodio
+        agent.reduce_epsilon()
 
-    return history
+        # Guardar estadísticas
+        rewards_history.append(total_reward)
+        eps_history.append(agent.epsilon)
+
+    # Devolver datos para Plotly
+    return {
+        "rewards": rewards_history,
+        "epsilon": eps_history
+    }

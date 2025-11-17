@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 import prediccionTrafico
 import randomForest
-from training import run_training
+from training import run_training   # ← test_agent_path ELIMINADO
 from regresionAccidente import logistic_Model, scaler, columnas_modelo, predict_label
 
 app = Flask(__name__)
@@ -129,9 +129,11 @@ def Diabetes():
         label, prob = randomForest.predict_label(features, threshold=0.5)
         resultado = label
         probabilidad = f"{prob:.4f}"    
-        interpretacion = "Con threshold=0.4, el modelo se vuelve más sensible (detecta más diabéticos), Pero a cambio pierde precisión en los sanos (personas sin diabetes)."
+        interpretacion = (
+            "Con threshold=0.4, el modelo se vuelve más sensible (detecta más diabéticos), "
+            "pero pierde precisión en los sanos."
+        )
 
-    # Leer exactitud desde archivo
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(BASE_DIR, "static", "accuracy_diabetes.txt"), "r") as f:
         accuracy = f.read().strip()
@@ -154,13 +156,12 @@ def gridworld_teoria():
 def gridworld_practica():
     return render_template("gridworld_practica.html")
 
-# Ejecutar el entrenamiento desde un botón JS
+# ENTRENAMIENTO
 @app.route("/gridworld/run", methods=["POST"])
 def gridworld_run():
     episodes = int(request.form.get("episodes", 50))
     result = run_training(episodes)
     return jsonify(result)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
