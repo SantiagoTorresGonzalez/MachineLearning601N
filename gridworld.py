@@ -2,77 +2,58 @@ import numpy as np
 import random
 
 class GridWorld:
-    def __init__(self, size=10):
-        self.size = size
-        self.start = (0, 0)
-        self.goal = (9, 9)
+    def __init__(self, filas=6, columnas=6):
+        self.filas = filas
+        self.columnas = columnas
 
-        # Obstáculos fijos (simulan estantes)
-        self.obstacles = {
-            (2, 2), (2, 3), (2, 4),
-            (5, 5), (6, 5), (7, 5),
-            (3, 7), (4, 7)
-        }
+        # 0 = libre
+        # -1 = obstáculo
+        # -2 = penalización por congestión
+        # 1 = meta
+        self.mapa = np.array([
+            [0, 0, 0, 0, -2, 1],
+            [0, -1, -1, 0, -2, 0],
+            [0, 0, 0, 0, 0, 0],
+            [-2, -2, 0, -1, 0, 0],
+            [0, 0, 0, 0, -2, 0],
+            [0, 0, -1, 0, 0, 0]
+        ])
 
-        # Zonas congestionadas
-        self.congestion = {
-            (1, 4), (1, 5), (1, 6),
-            (6, 2), (7, 2)
-        }
+        self.estado_inicial = (0, 0)
+        self.meta = (0, 5)
 
         self.reset()
 
-    # -------------------------------------------------------------------
-
     def reset(self):
-        """Reinicia el entorno al estado inicial."""
-        self.agent_pos = self.start
-        return self.agent_pos
+        self.agente = self.estado_inicial
+        return self.agente
 
-    # -------------------------------------------------------------------
+    def get_actions(self):
+        return ["arriba", "abajo", "izquierda", "derecha"]
 
-    def step(self, action):
-        """
-        Acciones:
-        0 = arriba
-        1 = abajo
-        2 = izquierda
-        3 = derecha
-        """
+    def step(self, accion):
+        fila, col = self.agente
 
-        r, c = self.agent_pos
-        nr, nc = r, c
+        if accion == "arriba": fila -= 1
+        elif accion == "abajo": fila += 1
+        elif accion == "izquierda": col -= 1
+        elif accion == "derecha": col += 1
 
-        # Movimiento según acción
-        if action == 0 and r > 0:
-            nr -= 1
-        elif action == 1 and r < self.size - 1:
-            nr += 1
-        elif action == 2 and c > 0:
-            nc -= 1
-        elif action == 3 and c < self.size - 1:
-            nc += 1
+        # Validar límites
+        if fila < 0 or fila >= self.filas or col < 0 or col >= self.columnas:
+            return self.agente, -5, False   # Penalización por golpear pared
 
-        next_pos = (nr, nc)
+        # Validar obstáculo
+        if self.mapa[fila, col] == -1:
+            return self.agente, -10, False
 
-        # Si intenta entrar a un obstáculo → se queda en el mismo sitio
-        if next_pos in self.obstacles:
-            next_pos = self.agent_pos
+        self.agente = (fila, col)
 
-        # Recompensa base
-        reward = -1  # penaliza tiempo
+        # Recompensas
+        if self.agente == self.meta:
+            return self.agente, 20, True
 
-        # Penalización adicional por congestión
-        if next_pos in self.congestion:
-            reward -= 4
+        if self.mapa[fila, col] == -2:
+            return self.agente, -3, False
 
-        # Recompensa final si llega a la meta
-        if next_pos == self.goal:
-            reward = 100
-
-        # Actualizar estado del agente
-        self.agent_pos = next_pos
-
-        done = (next_pos == self.goal)
-
-        return next_pos, reward, done
+        return self.agente, -1, False

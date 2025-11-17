@@ -1,36 +1,22 @@
-from gridworld import GridWorld
-from agent import QAgent
-import numpy as np
+import matplotlib.pyplot as plt
 
-def run_training(episodes=200):
-    env = GridWorld(size=10)
-    agent = QAgent(grid_size=10)
+def entrenar(env, agent, episodios=500):
+    historial = []
 
-    rewards_history = []
-    eps_history = []
-
-    for ep in range(episodes):
-        state = env.reset()
-        done = False
+    for ep in range(episodios):
+        estado = env.reset()
         total_reward = 0
 
+        done = False
         while not done:
-            action = agent.choose_action(state)
-            next_state, reward, done = env.step(action)
-            agent.update(state, action, reward, next_state)
+            accion = agent.choose_action(estado)
+            nuevo_estado, recompensa, done = env.step(accion)
+            agent.update(estado, accion, recompensa, nuevo_estado)
 
-            state = next_state
-            total_reward += reward
+            estado = nuevo_estado
+            total_reward += recompensa
 
-        # Reducir la exploración al final de cada episodio
-        agent.reduce_epsilon()
+        agent.decay()
+        historial.append(total_reward)
 
-        # Guardar estadísticas
-        rewards_history.append(total_reward)
-        eps_history.append(agent.epsilon)
-
-    # Devolver datos para Plotly
-    return {
-        "rewards": rewards_history,
-        "epsilon": eps_history
-    }
+    return historial

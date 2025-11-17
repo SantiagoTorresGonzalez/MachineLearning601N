@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GridWorld – Almacén 10x10 (Q-Learning)</title>
+    <title>GridWorld Q-Learning</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
 </head>
 
 <body class="fondo-personalizado text-white">
 
-    <!-- TITULO PRINCIPAL (NO SE CAMBIA) -->
     <p class="p-2 text-bg-secondary text-center fw-bold fs-1">APRENDIZAJE POR REFUERZO - GRIDWORLD</p>
 
     <div class="container mt-10 px-0">
 
         <!-- MENÚ DESPLEGABLE (NO SE CAMBIA) -->
-        <div class="dropdown">
+        <div class="dropdown mb-3">
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 A12 - APRENDIZAJE POR REFUERZO
             </button>
@@ -26,83 +25,42 @@
             </ul>
         </div>
 
+        <!-- 🔵 ZONA DONDE VA LA INTERFAZ DEL USUARIO -->
+        <div class="card p-4 bg-dark text-white border border-light">
 
-        <hr class="border border-light border-2 opacity-75 my-5">
+            <h3 class="mb-3">Simulación GridWorld (Q-Learning)</h3>
 
+            <!-- control de episodios -->
+            <label class="form-label">Número de episodios:</label>
+            <input id="episodios" type="number" class="form-control mb-3" value="300">
 
-        <!-- DESCRIPCIÓN DEL ENTORNO -->
-        <div class="custom-card">
-            <h3>Descripción del Entorno GridWorld (Almacén 10×10)</h3>
-            <ul>
-                <li><b>Tamaño:</b> 10x10</li>
-                <li><b>Estado inicial:</b> posición (0,0)</li>
-                <li><b>Meta (zona de despacho):</b> posición (9,9)</li>
-                <li><b>Obstáculos:</b> Estantes ubicados en posiciones fijas</li>
-                <li><b>Zonas con congestión:</b> Penalizan el paso</li>
-                <li><b>Acciones:</b> Arriba, Abajo, Izquierda, Derecha</li>
-                <li><b>Recompensas:</b>  
-                    <ul>
-                        <li>-0.1 por movimiento</li>
-                        <li>-1 por congestión</li>
-                        <li>-5 por chocar con muro</li>
-                        <li>-10 por intentar pasar por estante</li>
-                        <li>+20 al llegar a la meta</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+            <button class="btn btn-success w-100 mb-2" onclick="train()">Entrenar Agente</button>
+            <button class="btn btn-primary w-100 mb-2" onclick="testAgent()">Probar Agente</button>
+            <button class="btn btn-warning w-100 mb-2" onclick="resetAgent()">Reiniciar Agente</button>
 
+            <hr>
 
-        <!-- CONTROL DE ENTRENAMIENTO -->
-        <div class="custom-card">
+            <!-- indicadores -->
+            <p><b>Episodios:</b> <span id="lbl_ep">--</span></p>
+            <p><b>Epsilon:</b> <span id="lbl_epsilon">--</span></p>
+            <p><b>Recompensa Promedio:</b> <span id="lbl_prom">--</span></p>
 
-            <h3 class="text-center">Entrenamiento del Agente (Q-Learning)</h3>
+            <hr>
 
-            <div class="row text-center my-3">
-
-                <div class="col">
-                    <label class="form-label">Episodios</label>
-                    <input type="number" id="episodes" value="100" min="50" max="2000" class="form-control w-75 mx-auto">
-                </div>
-
-                <div class="col">
-                    <label class="form-label">Tasa de exploración (ε)</label>
-                    <input type="number" id="epsilon" value="0.2" min="0.01" max="1" step="0.01" class="form-control w-75 mx-auto">
-                </div>
-
+            <!-- lista de recompensas -->
+            <h5>Historial de Recompensas</h5>
+            <div style="max-height: 250px; overflow-y: auto;" class="border rounded p-2 bg-light">
+                <ul id="lista_recompensas" class="list-group text-dark"></ul>
             </div>
 
-            <div class="text-center my-3">
-                <button onclick="runTraining()" class="btn btn-light px-4 py-2 fs-5">▶ Iniciar Entrenamiento</button>
-            </div>
+            <hr>
 
-            <hr class="border border-light opacity-50">
-
-            <h4 class="text-center mt-4">Indicadores del Agente</h4>
-
-            <div class="text-center">
-                <p><b>Episodios completados:</b> <span id="episodesDone">0</span></p>
-                <p><b>Recompensa promedio:</b> <span id="avgReward">0</span></p>
-            </div>
+            <!-- imagen de la trayectoria -->
+            <h5>Trayectoria del agente</h5>
+            <img id="img_trayectoria" src="" class="img-fluid border border-light">
 
         </div>
-
-
-        <!-- GRÁFICO / TRAZADO DEL AGENTE -->
-        <div class="custom-card">
-
-            <h3>Trayectoria del Agente</h3>
-
-            <p>Visualización de la política aprendida y el recorrido sobre el almacén.</p>
-
-            <canvas id="gridCanvas" width="500" height="500" class="border bg-secondary"></canvas>
-
-            <div class="text-center mt-3">
-                <button onclick="testAgent()" class="btn btn-success m-2">▶ Probar Política</button>
-                <button onclick="resetGrid()" class="btn btn-danger m-2">↺ Reiniciar Vista</button>
-            </div>
-
-        </div>
+        <!-- FIN ZONA DE LA INTERFAZ -->
 
     </div>
 
@@ -111,97 +69,57 @@
         VOLVER AL INICIO
     </a>
 
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-
-    <!-- ================== SCRIPTS ================== -->
+    <!-- ==============================
+         JAVASCRIPT PARA LLAMAR API
+    =============================== -->
     <script>
-        let gridSize = 10;
-        let cellSize = 50;
-        let canvas = document.getElementById("gridCanvas");
-        let ctx = canvas.getContext("2d");
+        async function train() {
+            const episodios = document.getElementById("episodios").value;
 
-        function drawGrid(path = []) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (let i = 0; i < gridSize; i++) {
-                for (let j = 0; j < gridSize; j++) {
-
-                    ctx.strokeStyle = "black";
-                    ctx.strokeRect(j * cellSize, i * cellSize, cellSize, cellSize);
-
-                    // Obstáculos
-                    const obstacles = [
-                        [2,3],[2,4],[2,5],
-                        [5,1],[5,2],[5,3],
-                        [7,7],[7,8]
-                    ];
-                    if (obstacles.some(o => o[0] === i && o[1] === j)) {
-                        ctx.fillStyle = "brown";
-                        ctx.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-                    }
-
-                    // Congestión
-                    const congestion = [
-                        [4,4],[4,5],[4,6],
-                        [6,3],[6,4]
-                    ];
-                    if (congestion.some(c => c[0] === i && c[1] === j)) {
-                        ctx.fillStyle = "orange";
-                        ctx.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-                    }
-
-                    // Meta
-                    if (i === 9 && j === 9) {
-                        ctx.fillStyle = "green";
-                        ctx.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-                    }
-                }
-            }
-
-            // Dibujar la trayectoria aprendida
-            ctx.fillStyle = "cyan";
-            path.forEach(p => {
-                ctx.fillRect(p[1] * cellSize + 15, p[0] * cellSize + 15, 20, 20);
-            });
-        }
-
-        drawGrid();
-
-
-        // ------------------ ENTRENAMIENTO ------------------
-
-        function runTraining() {
-            const episodes = document.getElementById("episodes").value;
-            const epsilon = document.getElementById("epsilon").value;
-
-            fetch("/gridworld/run", {
+            const res = await fetch("/api/train", {
                 method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: "episodes=" + episodes + "&epsilon=" + epsilon
-            })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById("episodesDone").innerText = episodes;
-                document.getElementById("avgReward").innerText = data.average_reward;
-                alert("Entrenamiento completado.");
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ episodios })
+            });
+
+            const data = await res.json();
+
+            document.getElementById("lbl_ep").textContent = data.episodios;
+            document.getElementById("lbl_epsilon").textContent = data.epsilon;
+            document.getElementById("lbl_prom").textContent = data.recompensa_promedio;
+
+            const lista = document.getElementById("lista_recompensas");
+            lista.innerHTML = "";
+            data.historial.forEach(r => {
+                const li = document.createElement("li");
+                li.className = "list-group-item";
+                li.textContent = "Recompensa: " + r;
+                lista.appendChild(li);
             });
         }
 
+        async function testAgent() {
+            await fetch("/api/test");
 
-        // ------------------ PRUEBA DEL AGENTE ------------------
-
-        function testAgent() {
-            fetch("/gridworld/test")
-            .then(res => res.json())
-            .then(data => {
-                drawGrid(data.path);
-            });
+            document.getElementById("img_trayectoria").src =
+                "/api/trayectoria?" + new Date().getTime();
         }
 
-        function resetGrid() {
-            drawGrid();
+        async function resetAgent() {
+            const res = await fetch("/api/reset");
+            const data = await res.json();
+
+            if (data.status === "reset_ok") {
+                alert("Agente y entorno reiniciados correctamente ✔️");
+
+                document.getElementById("lbl_ep").textContent = "--";
+                document.getElementById("lbl_epsilon").textContent = "--";
+                document.getElementById("lbl_prom").textContent = "--";
+                document.getElementById("lista_recompensas").innerHTML = "";
+                document.getElementById("img_trayectoria").src = "";
+            }
         }
     </script>
 

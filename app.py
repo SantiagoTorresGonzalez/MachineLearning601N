@@ -8,12 +8,13 @@ import matplotlib.pyplot as plt
 
 import prediccionTrafico
 import randomForest
-from training import run_training   # ← test_agent_path ELIMINADO
 from regresionAccidente import logistic_Model, scaler, columnas_modelo, predict_label
+from gridworld import GridWorld
+from agent import QLearningAgent
+from training import entrenar
 
 app = Flask(__name__)
 
-# ---------------- RUTAS PRINCIPALES ----------------
 @app.route('/')
 def index():
     return render_template('index.html', name="Flask")
@@ -24,7 +25,7 @@ def PrimerC():
 
 @app.route('/SegundoCaso')
 def SegundoC():
-    return render_template('SegundoC.html', name="Flask")
+    return render_template('SegundoCaso.html', name="Flask")
 
 @app.route('/TercerCaso')
 def TercerC():
@@ -146,7 +147,7 @@ def Diabetes():
         accuracy=accuracy
     )
 
-# ---------------- APRENDIZAJE POR REFUERZO ----------------
+# APRENDIZAJE POR REFUERZO – GRIDWORLD
 
 @app.route("/gridworld/teoria")
 def gridworld_teoria():
@@ -156,12 +157,76 @@ def gridworld_teoria():
 def gridworld_practica():
     return render_template("gridworld_practica.html")
 
-# ENTRENAMIENTO
-@app.route("/gridworld/run", methods=["POST"])
-def gridworld_run():
-    episodes = int(request.form.get("episodes", 50))
-    result = run_training(episodes)
-    return jsonify(result)
+# Inicializar entorno y agente ====
+env = GridWorld()
+agent = QLearningAgent(env.get_actions())
+IMG_PATH = "static/trayectoria.png"
+
+# ENTRENAR ====
+@app.route("/api/train", methods=["POST"])
+def api_train():
+    data = request.get_json()
+    episodios = int(data["episodios"])
+
+    historial = entrenar(env, agent, episodios)
+    recompensa_prom = sum(historial) / len(historial)
+
+    return jsonify({
+        "status": "ok",
+        "episodios": episodios,
+        "epsilon": round(agent.epsilon, 3),
+        "recompensa_promedio": round(recompensa_prom, 3),
+        "historial": historial
+    })
+
+# PROBAR AGENTE====
+@app.route("/api/test")
+def api_test():
+    ruta = []
+    estado = env.reset()
+    ruta.append(estado)
+
+    done = False
+    while not done:
+        accion = agent.choose_action(estado)
+        nuevo_estado, _, done = env.step(accion)
+        estado = nuevo_estado
+        ruta.append(estado)
+
+    _dibujar_ruta(ruta)
+    return jsonify({"status": "ok", "ruta": ruta})
+
+# SERVIR IMAGEN ====
+@app.route("/api/trayectoria")
+def api_trayectoria():
+    if os.path.exists(IMG_PATH):
+        return send_file(IMG_PATH, mimetype="image/png")
+    return jsonify({"error": "Imagen no generada"}), 404
+
+# FUNCIÓN PARA DIBUJAR ====
+def _dibujar_ruta(ruta):
+    filas, cols = env.mapa.shape
+
+    fig, ax = plt.subplots()
+    ax.imshow(env.mapa, cmap="coolwarm", alpha=0.6)
+
+    xs = [p[1] for p in ruta]
+    ys = [p[0] for p in ruta]
+    ax.plot(xs, ys, marker="o")
+    ax.set_title("Trayectoria del agente")
+
+    fig.savefig(IMG_PATH)
+    plt.close(fig)
+
+# REINICIAR EL AGENTE
+@app.route("/api/reset")
+def api_reset():
+    global agent, env
+
+    env = GridWorld()                       
+    agent = QLearningAgent(env.get_actions())  
+
+    return jsonify({"status": "reset_ok"})
 
 if __name__ == '__main__':
     app.run(debug=True)
