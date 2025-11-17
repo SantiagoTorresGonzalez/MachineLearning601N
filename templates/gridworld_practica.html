@@ -14,7 +14,6 @@
 
     <div class="container mt-10 px-0">
 
-        <!-- MENÚ DESPLEGABLE (NO SE CAMBIA) -->
         <div class="dropdown mb-3">
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 A12 - APRENDIZAJE POR REFUERZO
@@ -25,29 +24,26 @@
             </ul>
         </div>
 
-        <!-- 🔵 ZONA DONDE VA LA INTERFAZ DEL USUARIO -->
         <div class="card p-4 bg-dark text-white border border-light">
 
-            <h3 class="mb-3">Simulación GridWorld (Q-Learning)</h3>
-
-            <!-- control de episodios -->
+            <h3 class="mb-3">Ejercicio practico</h3>
+            <h5>Una empresa de logística quiere que un robot móvil encuentre la ruta más eficiente para recoger productos dentro de un almacén dividido en cuadrículas.
+                Implementa un GridWorld donde cada celda representa un pasillo del almacén, algunos tienen obstáculos (estantes) y otros tienen penalizaciones por congestión. 
+                Entrena un agente con Q-Learning para que aprenda la ruta óptima hacia la zona de despacho con el menor tiempo posible.</h5>
+            <h3 class="mb-3">Simulación GridWorld</h3>
             <label class="form-label">Número de episodios:</label>
             <input id="episodios" type="number" class="form-control mb-3" value="300">
 
             <button class="btn btn-success w-100 mb-2" onclick="train()">Entrenar Agente</button>
             <button class="btn btn-primary w-100 mb-2" onclick="testAgent()">Probar Agente</button>
-            <button class="btn btn-warning w-100 mb-2" onclick="resetAgent()">Reiniciar Agente</button>
+            <button class="btn btn-danger w-100 mb-2" onclick="resetAgent()">Reiniciar Agente</button>
 
             <hr>
-
-            <!-- indicadores -->
-            <p><b>Episodios:</b> <span id="lbl_ep">--</span></p>
-            <p><b>Epsilon:</b> <span id="lbl_epsilon">--</span></p>
-            <p><b>Recompensa Promedio:</b> <span id="lbl_prom">--</span></p>
-
+                <p><b>Episodios:</b> <span id="lbl_ep">--</span></p>
+                <p><b>Epsilon:</b> <span id="lbl_epsilon">--</span></p>
+                <p><b>Recompensa Promedio:</b> <span id="lbl_prom">--</span></p>
             <hr>
 
-            <!-- lista de recompensas -->
             <h5>Historial de Recompensas</h5>
             <div style="max-height: 250px; overflow-y: auto;" class="border rounded p-2 bg-light">
                 <ul id="lista_recompensas" class="list-group text-dark"></ul>
@@ -55,16 +51,13 @@
 
             <hr>
 
-            <!-- imagen de la trayectoria -->
             <h5>Trayectoria del agente</h5>
             <img id="img_trayectoria" src="" class="img-fluid border border-light">
 
         </div>
-        <!-- FIN ZONA DE LA INTERFAZ -->
 
     </div>
 
-    <!-- BOTÓN DE VOLVER AL INICIO (NO SE CAMBIA) -->
     <a href="/" class="btn btn-secondary position-fixed bottom-0 start-0 m-3">
         VOLVER AL INICIO
     </a>
