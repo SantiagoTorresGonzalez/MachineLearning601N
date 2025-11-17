@@ -15,11 +15,11 @@
         <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
         <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            A5- REGRESIÓN LOGÍSTICA
+            A12- REINFORCEMENT LEARNING
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/ConceptosBasicos2">Conceptos básicos</a></li>
-            <li><a class="dropdown-item" href="/EjercicioPractico2">Ejercicio práctico</a></li>
+            <li><a class="dropdown-item" href="/gridworld/teoria">Conceptos básicos</a></li>
+            <li><a class="dropdown-item" href="/gridworld/ejercicio">Ejercicio práctico</a></li>
         </ul>
         </div>
     </div>
@@ -27,57 +27,108 @@
     <div class="container mt-5">
 
         <div class="custom-card w-75 mx-auto">
-            <h3>INTRODUCCIÓN REGRESIÓN LOGÍSTICA</h3>
+            <h3>INTRODUCCIÓN REINFORCEMENT LEARNING</h3>
                 <p>
-                    La regresión logística es una técnica de análisis de datos para hallar la probabilidad de un evento. 
-                    Ibm.com la explica en acotaciones de 0 a 1 dependiendo de cada caso y teniendo en cuenta la fórmula de 
-                    probabilidad (Ibm.com, 2025). Amazon.com lo explica como el uso de matemáticas entre dos factores de 
-                    datos para predicción de resultados certeros de forma rápida y sencilla con tratamiento previo de los 
-                    datos (Amazon.com, S/f). 
+                    El aprendizaje por refuerzo es un tipo de ML, el cual Kavlakoglu y Ph.D explica como un aprendizaje autónomo 
+                    por parte de cada máquina, teniendo en cuenta el entorno sin la intervención o dependencia de instrucciones de un
+                    usuario humano (Ph.D & Kavlakoglu, 2024). AWS lo menciona como una imitación del aprendizaje de ensayo y error 
+                    que utilizan las personas para alcanzar sus objetivos, donde cada algoritmo descubre rutas y resultados mejores 
+                    para alcanzar metas, optimizando el funcionamiento a objetivos de largo plazo y mejor adaptación 
+                    ante entornos cambiantes (AWS, s.f).
                 </p>
                 <p>
-                    Pero a groso modo, el concepto radica en la predicción certera de casos, similar a los números 
-                    binarios ante casos de uso como si ocurre un accidente, si llueve, etc. Su uso radica en proveer 
-                    una ayuda para obtener datos y realizar una mejor toma de decisiones.
-                </p>
-        </div>
-
-        <div class="custom-card w-75 mx-auto">
-            <h3>MODELO PARA VARIABLE OBJETIVO BINARIA</h3>
-                <p>
-                    En este contexto, MedCalc (s.f.) señala que, “La regresión logística es un método estadístico para 
-                    analizar un conjunto de datos con una o más variables independientes que determinan un resultado”, 
-                    lo que habla de su principal uso que es el de aplicarse en situaciones donde la variable objetivo 
-                    es binaria, es decir, cuando solo existen dos posibles resultados como: Si/No, Éxito/Fracaso o 
-                    Positivo/Negativo. Por lo que podríamos decir que la diferencia entre la regresión logística y 
-                    la regresión lineal es que la primera, se ocupa de predecir valores que son continuos, mientras 
-                    que el otro, categoriza eventos en grupos de dos.  
+                    Siendo una pieza clave en dar una mayor libertad a un modelo de ML, su diferencia con los aprendizajes supervisado 
+                    y no supervisado se centran en cómo es su entrenamiento, teniendo en cuenta que en uno el modelo tiene que encontrar patrones y relaciones 
+                    y el otro necesita que el ser humano defina entrada y salida de humanos. Por ende, el RL tiene un carácter más independiente y 
+                    escalable con una finalidad clara que se consigue por medio de una mejora constante hasta obtener un resultado más exacto. 
                 </p>
         </div>
 
         <div class="custom-card w-75 mx-auto">
-            <h3>PROBABILIDAD MEDIANTE SIGMOIDE/LOGIT</h3>
+            <h3>Componentes</h3>
                 <p>
-                    Para determinar la probabilidad de que ocurra el evento, este tipo de regresión utiliza la función 
-                    sigmoide o logit, la cual convierte cualquier numero en un resultado que se encuentra entre 0 y 1, 
-                    lo que permite que lo interpretemos como una probabilidad. DataCamp (s.f) menciona “la función 
-                    sigmoidea… da una curva en forma de ‘S’ que puede tomar cualquier número de valor real y convertirlo 
-                    en un valor entre 0 y 1” lo que nos habla de que esta función es capaz de representar las situaciones 
-                    que sean de naturaleza binaria, como bien describimos anteriormente, además de facilitar la toma de 
-                    decisiones en base a datos.
+                    Bagnato habla de 2 componentes y 3 relaciones que hay entre ellos, los cuales definen, la actuación y 
+                    retroalimentación del algoritmo (Bagnato, 2020). Los cuales son los siguientes: 
                 </p>
+                <ul>
+                    <li><strong>Agente:</strong> Hace referencia al modelo a entrenar y aprender a que tome decisiones por su cuenta.</li>
+                    <li><strong>Entorno:</strong> El entorno donde el modelo se desarrolla y ejecuta, con las limitaciones y 
+                        reglas propias del contexto y las que puedan surgir con el paso del tiempo.</li>
+                    <li><strong>Acción:</strong> Hace referencia a toda acción o decisión que tome el modelo en un momento en específico.</li>
+                    <li><strong>Estado:</strong> Indicadores de diversidad de cada factor u objeto presente dentro del entorno de trabajo.</li>
+                    <li><strong>Recompensa:</strong> Retroalimentación que recibe el modelo luego de tomar una acción, 
+                        la cual puede ser positiva o negativa dependiendo del resultado obtenido.</li>
+                </ul>
+                <p>
+                    Sin embargo, el RL presenta algunos factores aparte del ecosistema que Kavlakoglu (2025) explica como AEO (agente-entorno-objetivo), 
+                    se debe tener en cuenta algunos elementos que contribuyen y definen los problemas que tiene este tema. Estos subcomponentes 
+                    son los siguientes: 
+                </p>
+                <ul>
+                    <li><strong>Política:</strong> Este atributo es la base del aprendizaje, ya que es quien define el comportamiento del modelo. 
+                        Mapea los factores que se encuentran en el ambiente y el estado en que se encuentran en cada momento. Por lo tanto, 
+                        puede hacer que el modelo funcione como algo rudimentario o algo más complejo como detectar peatones en un vehículo autónomo.</li>
+                    <li><strong>Señal de recompensa:</strong> RSe encarga de designar el objetivo del modelo, obtener todas las señales positivas y 
+                        negativas que obtenga el algoritmo durante su ejecución, como un anecdotario cuyo objetivo es ser la guía para una mejora constante 
+                        y la maximización de recompensas de forma acumulativa.</li>
+                    <li><strong>Función de valor:</strong> La función de valor es similar a la señal de recompensa, con la diferencia en que la primera se enfoca en el largo plazo. Siendo un valor donde se mide la conveniencia
+                         de un valor o estado entre los encontrados previamente y las recompensas que le puedan seguir</li>
+                    <li><strong>Modelo del entorno:</strong> Se enfoca en la predicción del comportamiento del entorno, siendo el encargado de la planificación para determinar
+                         una línea de actuación en función de los resultados hallados.</li>
+                </ul>
+        </div>
+
+        <div class="custom-card w-75 mx-auto">
+            <h3>Principios del ciclo de aprendizaje</h3>
+                <ul>
+                    <li><strong>Estado y exploración:</strong> Se basa en la exploración y maximización de recompensas por medio de acciones 
+                        al azar para encontrar más información del entorno.</li>
+                    <li><strong>Retorno acumulado:</strong> Es la suma del total de recompensas conseguidas en un lapso de tiempo o en su defecto, a lo largo de su vida. 
+                        Mide la calidad y efectividad de una política o secuencia de acciones.</li>
+                    <li><strong>Descuento temporal:</strong> Es un ítem el cual da mayor jerarquía a las recompensas que se puedan dar en un futuro, su valor varía de 0 a 1 
+                        el cual indica si la preocupación del modelo se enfoca en algo inmediato (si vale 0) o un valor de 1 cuando las recompensas a corto
+                        y largo plazo tienen una misma jerarquía en la toma de decisiones, buscando mayormente los objetivos a largo plazo.</li>
+
+                </ul>
+        </div>
+
+        <div class="custom-card w-75 mx-auto">
+            <h3>Algoritmos principales</h3>
+                <ul>
+                    <li><strong>Q-Learning:</strong> Este algoritmo se enfoca de aprendizaje de mejor acción futura, no se enfoca del todo en la política, sino de entenderla para aplicarla después, sin importar la política de exploración ya estipulada, obteniendo un aprendizaje más efectivo y agresivo, 
+                        siendo muy útil en resolución de laberintos y gestión de inventario.</li>
+                    <li><strong>SARSA:</strong> Se enfoca en la acción real que se toma en el siguiente estado, usando dicha política como base de mejora. Siendo clave en entornos de gran 
+                        riesgo donde las probabilidades de castigo como retroalimentación son altas, se pueden encontrar en navegación de drones y sistemas de control en tiempo real.</li>
+                    <li><strong>Deep Q-Network (DQN):</strong> Es una mejora aplicada a problemas complejos y de alta envergadura, que utiliza una red neuronal para aproximar un valor a la función Q, donde la entrada se encuentra el estado y salen los valores Q para cada acción posible. 
+                        Es importante para visión artificial, finanzas y procesamiento de lenguaje natural.</li>
+                </ul>
+        </div>
+
+        <div class="custom-card w-75 mx-auto">
+            <h3>Buenas prácticas</h3>
+                <ul>
+                    <li><strong>Estabilidad del aprendizaje:</strong> Aquí el valor de Q o la política tengan una variabilidad grande o divergente. Por ende, se recomienda usar redes objetivo (target network) para estabilizar el objetivo; almacenar y muestrear transiciones rompiendo correlaciones temporales (experience replay) mejorando la generalizción. 
+                        Por último, se deben limitar los valores de cada gradiente que por un valor alto pueda desestabilizar la red utilizada y usar algoritmos que garanticen convergencia como el PPO u TRPO.</li>
+                    <li><strong>Tasa de exploración:</strong> Se enfoca en obtener un equilibrio de exploración y obtener nuevas estrategias para explotar y aprovechar de mejor manera el conocimiento del modelo. Para conseguir estos resultados, se necesitan métodos enfocados en la incertidumbre, 
+                        adición de ruido para una mejor efectividad y el decremento de una variable (épsilon) mientras se aprende y adapta una nueva política más sólida.</li>
+                    <li><strong>Manejo de recompensas:</strong> Hace referencia a la señal y principal respuesta del modelo. Se pueden usar funciones que retornen señales potenciales (intermedias) sin cambiar la política principal, como acercamientos al objetivo estipulado, recibir retroalimentación de forma frecuente para facilitar el aprendizaje. También se pueden ir escalando las recompensas, 
+                        ofreciendo estabilidad y selección de hiperparámetros.</li>
+                    <li><strong>Convergencia:</strong>Asegura que el agente coincida su funcionamiento a una política óptima, o en su defecto a algo aproximado, para conseguirlo se necesita un monitoreo de puntos clave como la longitud o el valor promedio de la recompensa. También se puede detener la ejecución del modelo si el rendimiento no mejora para evitar un sobreentrenamiento y por último 
+                        seleccionar algoritmos que sean garantes de que se cumpla la convergencia.</li>
+                    <li><strong>Generalización:</strong> Ayuda a la efectividad ante entornos no vistos o analizados, se pueden variar factores dentro del entorno para exponer al modelo a un mayor número de escenarios y evitar un sobreajuste. 
+                        También se puede aumentar la cantidad de datos y la robustez de ellos para que pueda responder ante cualquier variación, poner a prueba al algoritmo a diferentes entornos al conocido junto a una buena estrategia para encontrar una política óptima para alcanzar el objetivo principal.</li>
+                </ul>
         </div>
 
         <div class="custom-card w-75 mx-auto">
             <h3>Bibliografia</h3>
-                <p>¿Qué es la regresión logística? (2025, febrero 5). 
-                    Ibm.com. https://www.ibm.com/es-es/think/topics/logistic-regression</p>
-                <p>Amazon.com. Recuperado el 12 de septiembre de 2025, 
-                    de https://aws.amazon.com/es/what-is/logistic-regression</p>
-                <p>MedCalc. (s. f.). Regresión logística. Recuperado el 15 de septiembre de 2025, 
-                    de https://www.medcalc.org/es/manual/logistic-regression.php</p>
-                <p>Datacamp. (s. f.). Regresión logística en Python: comprensión e implementación. Recuperado el 15 de septiembre de 2025, 
-                    de https://www.datacamp.com/es/tutorial/understanding-logistic-regression-python</p>
+                <p>¿Qué es el Aprendizaje mediante refuerzo? - Explicación del Aprendizaje mediante refuerzo - AWS. (n.d.). 
+                    Amazon Web Services, Inc. https://aws.amazon.com/es/what-is/reinforcement-learning/</p>
+                <p>Ph.D, J. M., & Kavlakoglu, E. (2024, March 25). Aprendizaje por refuerzo. Ibm.com. 
+                    https://www.ibm.com/es-es/think/topics/reinforcement-learning</p>
+                <p>Bagnato, J. I. (2020, December 24). Aprendizaje por Refuerzo | Aprende Machine Learning. Www.aprendemachinelearning.com. 
+                    https://www.aprendemachinelearning.com/aprendizaje-por-refuerzo/</p>
+                <p>Ordóñez Bolaños, O. A. (2024). Deep reinforcement learning. https://ordonezoswaldo.com/Reinforcementlearningweb.pdf}</p>
         </div>
 
     </div>
