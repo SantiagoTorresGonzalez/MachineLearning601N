@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, jsonify
 import pandas as pd
 import numpy as np
 import io
@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 import prediccionTrafico
 import randomForest
+from training import run_training
 from regresionAccidente import logistic_Model, scaler, columnas_modelo, predict_label
 
 app = Flask(__name__)
@@ -142,6 +143,23 @@ def Diabetes():
         interpretacion=interpretacion,
         accuracy=accuracy
     )
+
+# ---------------- APRENDIZAJE POR REFUERZO ----------------
+
+@app.route("/gridworld/teoria")
+def gridworld_teoria():
+    return render_template("gridworld_teoria.html")
+
+@app.route("/gridworld/practica")
+def gridworld_practica():
+    return render_template("gridworld_practica.html")
+
+# Ejecutar el entrenamiento desde un botón JS
+@app.route("/gridworld/run", methods=["POST"])
+def gridworld_run():
+    episodes = int(request.form.get("episodes", 50))
+    result = run_training(episodes)
+    return jsonify(result)
 
 # ---------------- EJECUCIÓN ----------------
 if __name__ == '__main__':
