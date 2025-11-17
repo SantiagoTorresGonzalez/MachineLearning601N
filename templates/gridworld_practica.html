@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio práctico - GridWorld (Q-Learning)</title>
+    <title>Ejercicio práctico: GridWorld (Q-Learning)</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
 </head>
@@ -58,4 +58,74 @@
 
         <hr class="border border-light opacity-50">
 
-        <h4 class="text-center mt-4">R
+        <h4 class="text-center mt-4">Resultados del Entrenamiento</h4>
+
+        <div class="table-responsive">
+            <table id="results" class="table table-dark table-striped text-center mt-3">
+                <thead>
+                    <tr>
+                        <th>Episodio</th>
+                        <th>Pasos</th>
+                        <th>Recompensa total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <!-- Trayectoria -->
+    <div class="custom-card">
+        <h3>Vista de la Política Aprendida</h3>
+
+        <p>Al finalizar el entrenamiento puedes visualizar la trayectoria o imprimir la política aprendida del agente.</p>
+
+        <div id="policyPreview" class="border p-3 rounded bg-secondary text-center">
+            <i>La trayectoria se mostrará aquí después del entrenamiento.</i>
+        </div>
+    </div>
+
+
+    </div> 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function runTraining() {
+            const episodes = document.getElementById("episodes").value;
+
+            fetch("/gridworld/run", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "episodes=" + episodes
+            })
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.querySelector("#results tbody");
+                tbody.innerHTML = "";
+
+                data.forEach(row => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${row.episode}</td>
+                            <td>${row.steps}</td>
+                            <td>${row.reward}</td>
+                        </tr>`;
+                });
+
+                document.getElementById("policyPreview").innerHTML =
+                    "<b>Entrenamiento completado. Política lista para usar.</b>";
+            });
+        }
+    </script>
+
+    <a href="/" class="btn btn-secondary position-fixed bottom-0 start-0 m-3">
+        VOLVER AL INICIO
+    </a>
+
+</body>
+</html>
