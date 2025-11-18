@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, jsonify
 import pandas as pd
 import numpy as np
 import io
@@ -9,10 +9,12 @@ import matplotlib.pyplot as plt
 import prediccionTrafico
 import randomForest
 from regresionAccidente import logistic_Model, scaler, columnas_modelo, predict_label
+from gridworld import GridWorld
+from agent import QLearningAgent
+from training import entrenar
 
 app = Flask(__name__)
 
-# ---------------- RUTAS PRINCIPALES ----------------
 @app.route('/')
 def index():
     return render_template('index.html', name="Flask")
@@ -23,7 +25,7 @@ def PrimerC():
 
 @app.route('/SegundoCaso')
 def SegundoC():
-    return render_template('SegundoC.html', name="Flask")
+    return render_template('SegundoCaso.html', name="Flask")
 
 @app.route('/TercerCaso')
 def TercerC():
@@ -128,9 +130,11 @@ def Diabetes():
         label, prob = randomForest.predict_label(features, threshold=0.5)
         resultado = label
         probabilidad = f"{prob:.4f}"    
-        interpretacion = "Con threshold=0.4, el modelo se vuelve más sensible (detecta más diabéticos), Pero a cambio pierde precisión en los sanos (personas sin diabetes)."
+        interpretacion = (
+            "Con threshold=0.4, el modelo se vuelve más sensible (detecta más diabéticos), "
+            "pero pierde precisión en los sanos."
+        )
 
-    # Leer exactitud desde archivo
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(BASE_DIR, "static", "accuracy_diabetes.txt"), "r") as f:
         accuracy = f.read().strip()
@@ -143,6 +147,86 @@ def Diabetes():
         accuracy=accuracy
     )
 
-# ---------------- EJECUCIÓN ----------------
+# APRENDIZAJE POR REFUERZO – GRIDWORLD
+
+@app.route("/gridworld/teoria")
+def gridworld_teoria():
+    return render_template("gridworld_teoria.html")
+
+@app.route("/gridworld/practica")
+def gridworld_practica():
+    return render_template("gridworld_practica.html")
+
+# Inicializar entorno y agente ====
+env = GridWorld()
+agent = QLearningAgent(env.get_actions())
+IMG_PATH = "static/trayectoria.png"
+
+# ENTRENAR ====
+@app.route("/api/train", methods=["POST"])
+def api_train():
+    data = request.get_json()
+    episodios = int(data["episodios"])
+
+    historial = entrenar(env, agent, episodios)
+    recompensa_prom = sum(historial) / len(historial)
+
+    return jsonify({
+        "status": "ok",
+        "episodios": episodios,
+        "epsilon": round(agent.epsilon, 3),
+        "recompensa_promedio": round(recompensa_prom, 3),
+        "historial": historial
+    })
+
+# PROBAR AGENTE====
+@app.route("/api/test")
+def api_test():
+    ruta = []
+    estado = env.reset()
+    ruta.append(estado)
+
+    done = False
+    while not done:
+        accion = agent.choose_action(estado)
+        nuevo_estado, _, done = env.step(accion)
+        estado = nuevo_estado
+        ruta.append(estado)
+
+    _dibujar_ruta(ruta)
+    return jsonify({"status": "ok", "ruta": ruta})
+
+# SERVIR IMAGEN ====
+@app.route("/api/trayectoria")
+def api_trayectoria():
+    if os.path.exists(IMG_PATH):
+        return send_file(IMG_PATH, mimetype="image/png")
+    return jsonify({"error": "Imagen no generada"}), 404
+
+# FUNCIÓN PARA DIBUJAR ====
+def _dibujar_ruta(ruta):
+    filas, cols = env.mapa.shape
+
+    fig, ax = plt.subplots()
+    ax.imshow(env.mapa, cmap="coolwarm", alpha=0.6)
+
+    xs = [p[1] for p in ruta]
+    ys = [p[0] for p in ruta]
+    ax.plot(xs, ys, marker="o")
+    ax.set_title("Trayectoria del agente")
+
+    fig.savefig(IMG_PATH)
+    plt.close(fig)
+
+# REINICIAR EL AGENTE
+@app.route("/api/reset")
+def api_reset():
+    global agent, env
+
+    env = GridWorld()                       
+    agent = QLearningAgent(env.get_actions())  
+
+    return jsonify({"status": "reset_ok"})
+
 if __name__ == '__main__':
     app.run(debug=True)

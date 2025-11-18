@@ -1,1 +1,4 @@
-# MachineLearning601N
+# Aprendizaje por Refuerzo en GridWorld
+El proyecto usa un entorno GridWorld de tamaño 10x10, donde un agente debe desplazarse desde una posición inicial hasta una meta final, evitando obstáculos y zonas de congestión. El entorno asigna recompensas positivas cuando el agente avanza hacia la meta y castigos cuando entra a una zona penalizada o choca con un obstáculo. Esto permite simular un pequeño sistema de navegación donde el agente debe aprender la mejor ruta posible a través del mapa, equilibrando exploración y decisiones correctas.
+
+Para resolver este problema se utiliza el algoritmo Q-Learning, un método de aprendizaje por refuerzo que permite al agente aprender mediante prueba y error. Durante el entrenamiento, el agente ajusta una tabla de valores Q en la que almacena la utilidad esperada de cada acción según el estado. Con el paso de los episodios, el agente reduce la exploración y mejora su capacidad para elegir acciones óptimas. Como resultado, el agente aprende a identificar rutas más eficientes, evita las zonas negativas y converge hacia políticas que maximizan la recompensa total.

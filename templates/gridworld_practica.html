@@ -1,0 +1,120 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GridWorld Q-Learning</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+
+<body class="fondo-personalizado text-white">
+
+    <p class="p-2 text-bg-secondary text-center fw-bold fs-1">APRENDIZAJE POR REFUERZO - GRIDWORLD</p>
+
+    <div class="container mt-10 px-0">
+
+        <div class="dropdown mb-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                A12 - APRENDIZAJE POR REFUERZO
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/gridworld/teoria">Conceptos básicos</a></li>
+                <li><a class="dropdown-item" href="/gridworld/practica">Ejercicio práctico</a></li>
+            </ul>
+        </div>
+
+        <div class="card p-4 bg-dark text-white border border-light">
+
+            <h3 class="mb-3">Ejercicio practico</h3>
+            <h5>Una empresa de logística quiere que un robot móvil encuentre la ruta más eficiente para recoger productos dentro de un almacén dividido en cuadrículas.
+                Implementa un GridWorld donde cada celda representa un pasillo del almacén, algunos tienen obstáculos (estantes) y otros tienen penalizaciones por congestión. 
+                Entrena un agente con Q-Learning para que aprenda la ruta óptima hacia la zona de despacho con el menor tiempo posible.</h5>
+            <h3 class="mb-3">Simulación GridWorld</h3>
+            <label class="form-label">Número de episodios:</label>
+            <input id="episodios" type="number" class="form-control mb-3" value="300">
+
+            <button class="btn btn-success w-100 mb-2" onclick="train()">Entrenar Agente</button>
+            <button class="btn btn-primary w-100 mb-2" onclick="testAgent()">Probar Agente</button>
+            <button class="btn btn-danger w-100 mb-2" onclick="resetAgent()">Reiniciar Agente</button>
+
+            <hr>
+                <p><b>Episodios:</b> <span id="lbl_ep">--</span></p>
+                <p><b>Epsilon:</b> <span id="lbl_epsilon">--</span></p>
+                <p><b>Recompensa Promedio:</b> <span id="lbl_prom">--</span></p>
+            <hr>
+
+            <h5>Historial de Recompensas</h5>
+            <div style="max-height: 250px; overflow-y: auto;" class="border rounded p-2 bg-light">
+                <ul id="lista_recompensas" class="list-group text-dark"></ul>
+            </div>
+
+            <hr>
+
+            <h5>Trayectoria del agente</h5>
+            <img id="img_trayectoria" src="" class="img-fluid border border-light">
+
+        </div>
+
+    </div>
+
+    <a href="/" class="btn btn-secondary position-fixed bottom-0 start-0 m-3">
+        VOLVER AL INICIO
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ==============================
+         JAVASCRIPT PARA LLAMAR API
+    =============================== -->
+    <script>
+        async function train() {
+            const episodios = document.getElementById("episodios").value;
+
+            const res = await fetch("/api/train", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ episodios })
+            });
+
+            const data = await res.json();
+
+            document.getElementById("lbl_ep").textContent = data.episodios;
+            document.getElementById("lbl_epsilon").textContent = data.epsilon;
+            document.getElementById("lbl_prom").textContent = data.recompensa_promedio;
+
+            const lista = document.getElementById("lista_recompensas");
+            lista.innerHTML = "";
+            data.historial.forEach(r => {
+                const li = document.createElement("li");
+                li.className = "list-group-item";
+                li.textContent = "Recompensa: " + r;
+                lista.appendChild(li);
+            });
+        }
+
+        async function testAgent() {
+            await fetch("/api/test");
+
+            document.getElementById("img_trayectoria").src =
+                "/api/trayectoria?" + new Date().getTime();
+        }
+
+        async function resetAgent() {
+            const res = await fetch("/api/reset");
+            const data = await res.json();
+
+            if (data.status === "reset_ok") {
+                alert("Agente y entorno reiniciados correctamente ✔️");
+
+                document.getElementById("lbl_ep").textContent = "--";
+                document.getElementById("lbl_epsilon").textContent = "--";
+                document.getElementById("lbl_prom").textContent = "--";
+                document.getElementById("lista_recompensas").innerHTML = "";
+                document.getElementById("img_trayectoria").src = "";
+            }
+        }
+    </script>
+
+</body>
+</html>
