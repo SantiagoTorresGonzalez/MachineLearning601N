@@ -1,142 +1,468 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conceptos Básicos Regresión logística</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
 </head>
 
 <body class="fondo-personalizado text-white">
+    <div class="reading-progress-bar"></div>
 
-    <p class="p-2 text-bg-secondary text-center fw-bold fs-1">CONCEPTOS BÁSICOS REGRESIÓN LOGÍSTICA</p>
+    <p class="p-2 text-bg-secondary text-center fw-bold fs-1 header-animated">
+        <i class="bi bi-cpu"></i> CONCEPTOS BÁSICOS REGRESIÓN LOGÍSTICA
+    </p>
 
     <div class="container mt-5 px-0">
         <div class="d-flex flex-row flex-wrap gap-5 justify-content-start">
-        <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            A12- REINFORCEMENT LEARNING
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/gridworld/teoria">Conceptos básicos</a></li>
-            <li><a class="dropdown-item" href="/gridworld/practica">Ejercicio práctico</a></li>
-        </ul>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle pulse-button" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="bi bi-robot"></i> A12- REINFORCEMENT LEARNING
+                </button>
+                <ul class="dropdown-menu dropdown-menu-animated">
+                    <li><a class="dropdown-item" href="/gridworld/teoria"><i class="bi bi-book"></i> Conceptos
+                            básicos</a></li>
+                    <li><a class="dropdown-item" href="/gridworld/practica"><i class="bi bi-code-slash"></i> Ejercicio
+                            práctico</a></li>
+                </ul>
+            </div>
         </div>
+
+        <!-- Navegacion -->
+        <div class="container mt-4">
+            <nav class="nav nav-pills nav-fill section-navigator">
+                <a class="nav-link active" href="#intro"><i class="bi bi-house"></i> Introducción</a>
+                <a class="nav-link" href="#componentes"><i class="bi bi-puzzle"></i> Componentes</a>
+                <a class="nav-link" href="#principios"><i class="bi bi-diagram-3"></i> Principios</a>
+                <a class="nav-link" href="#algoritmos"><i class="bi bi-code-square"></i> Algoritmos</a>
+                <a class="nav-link" href="#practicas"><i class="bi bi-check-circle"></i> Buenas Prácticas</a>
+                <a class="nav-link" href="#bibliografia"><i class="bi bi-journal-text"></i> Bibliografía</a>
+            </nav>
+        </div>
+
+        <div class="container mt-5">
+
+            <div id="intro" class="custom-card w-75 mx-auto card-animated scroll-reveal">
+                <div class="card-header-custom">
+                    <h3><i class="bi bi-lightbulb"></i> INTRODUCCIÓN REINFORCEMENT LEARNING</h3>
+                </div>
+                <div class="card-body-content">
+                    <p class="text-justified">
+                        El aprendizaje por refuerzo es un tipo de ML, el cual Kavlakoglu y Ph.D explica como un
+                        aprendizaje autónomo
+                        por parte de cada máquina, teniendo en cuenta el entorno sin la intervención o dependencia de
+                        instrucciones de un
+                        usuario humano (Ph.D & Kavlakoglu, 2024). AWS lo menciona como una imitación del aprendizaje de
+                        ensayo y error
+                        que utilizan las personas para alcanzar sus objetivos, donde cada algoritmo descubre rutas y
+                        resultados mejores
+                        para alcanzar metas, optimizando el funcionamiento a objetivos de largo plazo y mejor adaptación
+                        ante entornos cambiantes (AWS, s.f).
+                    </p>
+                    <div class="info-highlight">
+                        <p>
+                            Siendo una pieza clave en dar una mayor libertad a un modelo de ML, su diferencia con los
+                            aprendizajes supervisado
+                            y no supervisado se centran en cómo es su entrenamiento, teniendo en cuenta que en uno el
+                            modelo tiene que encontrar patrones y relaciones
+                            y el otro necesita que el ser humano defina entrada y salida de datos. Por ende, el RL tiene
+                            un carácter más independiente y
+                            escalable con una finalidad clara que se consigue por medio de una mejora constante hasta
+                            obtener un resultado más exacto.
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="componentes" class="custom-card w-75 mx-auto card-animated scroll-reveal">
+                <div class="card-header-custom">
+                    <h3><i class="bi bi-puzzle"></i> Componentes</h3>
+                </div>
+                <div class="card-body-content">
+                    <p>
+                        Bagnato habla de 2 componentes y 3 relaciones que hay entre ellos, los cuales definen, la
+                        actuación y
+                        retroalimentación del algoritmo (Bagnato, 2020). Los cuales son los siguientes:
+                    </p>
+                    <ul class="custom-list">
+                        <li class="list-item-animated"><strong>Agente:</strong> Hace referencia al modelo a entrenar y
+                            enseñar a que tome decisiones por su cuenta.</li>
+                        <li class="list-item-animated"><strong>Entorno:</strong> El entorno donde el modelo se
+                            desarrolla y ejecuta, con las limitaciones y
+                            reglas propias del contexto y las que puedan surgir con el paso del tiempo</li>
+                        <li class="list-item-animated"><strong>Acción:</strong> Hace referencia a toda acción o decisión
+                            que tome el modelo en un momento en específico.</li>
+                        <li class="list-item-animated"><strong>Estado:</strong> Indicadores de diversidad de cada factor
+                            u objeto presente dentro del entorno de trabajo.</li>
+                        <li class="list-item-animated"><strong>Recompensa:</strong> Retroalimentación que recibe el
+                            modelo luego de tomar una acción,
+                            la cual puede ser positiva o negativa dependiendo del resultado obtenido.</li>
+                    </ul>
+
+                    <div class="accordion accordion-flush mt-4" id="accordionSubcomponentes">
+                        <div class="accordion-item bg-transparent">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-dark text-white" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
+                                    <i class="bi bi-gear me-2"></i> Ver Subcomponentes Adicionales
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse">
+                                <div class="accordion-body text-white">
+                                    <p>
+                                        Sin embargo, el RL presenta algunos factores aparte del ecosistema que
+                                        Kavlakoglu (2025) explica como AEO (agente-entorno-objetivo),
+                                        se debe tener en cuenta algunos elementos que contribuyen y definen los
+                                        problemas que tiene este tema. Estos subcomponentes
+                                        son los siguientes:
+                                    </p>
+                                    <ul class="custom-list">
+                                        <li><strong>Política:</strong> Este atributo es la base del aprendizaje, ya que
+                                            es quien define el comportamiento del modelo. Mapea los factores que se
+                                            encuentran en el ambiente y el estado en que se encuentran en cada momento.
+                                            Por lo tanto,
+                                            puede hacer que el modelo funcione como algo rudimentario o algo más
+                                            complejo como detectar peatones en un vehículo autónomo.</li>
+                                        <li><strong>Señal de recompensa:</strong>Se encarga de designar el objetivo del
+                                            modelo, obtener todas las señales positivas y
+                                            negativas que obtenga el algoritmo durante su ejecución, como un anecdotario
+                                            cuyo objetivo es ser la guía para una mejora constante
+                                            y la maximización de recompensas de forma acumulativa.</li>
+                                        <li><strong>Función de valor:</strong> La función de valor es similar a la señal
+                                            de recompensa, con la diferencia en que la primera se enfoca en el largo
+                                            plazo. Siendo un valor donde se mide la conveniencia
+                                            de un valor o estado entre los encontrados previamente y las recompensas que
+                                            le puedan seguir</li>
+                                        <li><strong>Modelo del entorno:</strong> Se enfoca en la predicción del
+                                            comportamiento del entorno, siendo el encargado de la planificación para
+                                            determinar
+                                            una línea de actuación en función de los resultados hallados</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRINCIPIOS DEL CICLO DE APRENDIZAJE -->
+            <div id="principios" class="custom-card w-75 mx-auto card-animated scroll-reveal">
+                <div class="card-header-custom">
+                    <h3><i class="bi bi-diagram-3"></i> Principios del Ciclo de Aprendizaje</h3>
+                </div>
+                <div class="card-body-content">
+                    <div class="principles-grid">
+                        <div class="principle-item">
+                            <div class="principle-badge">
+                                <i class="bi bi-compass"></i>
+                            </div>
+                            <h5>Estado y exploración</h5>
+                            <p>Se basa en la exploración y maximización de recompensas por medio de acciones 
+                            al azar para encontrar más información del entorno</p>
+                        </div>
+
+                        <div class="principle-item">
+                            <div class="principle-badge">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                            <h5>Retorno acumulado</h5>
+                            <p>Es la suma del total de recompensas conseguidas en un lapso de tiempo o en su defecto, a lo largo de su vida. 
+                            Mide la calidad y efectividad de una política o secuencia de acciones.</p>
+                        </div>
+
+                        <div class="principle-item">
+                            <div class="principle-badge">
+                                <i class="bi bi-hourglass-split"></i>
+                            </div>
+                            <h5>Descuento temporal</h5>
+                            <p>Es un ítem el cual da mayor jerarquía a las recompensas que se puedan dar en un futuro, su valor varía de 0 a 1 
+                            el cual indica si la preocupación del modelo se enfoca en algo inmediato (si vale 0) o un valor de 1 cuando las recompensas a corto y largo plazo tienen una misma jerarquía en la toma de decisiones, buscando mayormente los objetivos a largo plazo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALGORITMOS PRINCIPALES -->
+            <div id="algoritmos" class="custom-card w-75 mx-auto card-animated scroll-reveal">
+                <div class="card-header-custom">
+                    <h3><i class="bi bi-code-square"></i> Algoritmos Principales</h3>
+                </div>
+                <div class="card-body-content">
+                    <div class="accordion accordion-flush" id="accordionAlgoritmos">
+
+                        <!-- Q-Learning -->
+                        <div class="accordion-item bg-transparent border-bottom border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed algo-button" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseQLearning">
+                                    <span class="algo-icon q-learning"><i class="bi bi-lightning-fill"></i></span>
+                                    <span class="algo-title">Q-Learning</span>
+                                </button>
+                            </h2>
+                            <div id="collapseQLearning" class="accordion-collapse collapse"
+                                data-bs-parent="#accordionAlgoritmos">
+                                <div class="accordion-body algo-body">
+                                    <p class="algo-description">
+                                        Este algoritmo se enfoca de aprendizaje de mejor acción futura, no se enfoca del todo en la política, sino de entenderla para aplicarla después, sin importar la política de exploración ya estipulada, obteniendo un aprendizaje más efectivo y agresivo, 
+                                        siendo muy útil en resolución de laberintos y gestión de inventario
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SARSA -->
+                        <div class="accordion-item bg-transparent border-bottom border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed algo-button" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseSARSA">
+                                    <span class="algo-icon sarsa"><i class="bi bi-shield-check"></i></span>
+                                    <span class="algo-title">SARSA</span>
+                                </button>
+                            </h2>
+                            <div id="collapseSARSA" class="accordion-collapse collapse"
+                                data-bs-parent="#accordionAlgoritmos">
+                                <div class="accordion-body algo-body">
+                                    <p class="algo-description">
+                                        Se enfoca en la acción real que se toma en el siguiente estado, usando dicha política como base de mejora. Siendo clave en entornos de gran 
+                                        riesgo donde las probabilidades de castigo como retroalimentación son altas, se pueden encontrar en navegación de drones y sistemas de control en tiempo real
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Deep Q-Network -->
+                        <div class="accordion-item bg-transparent">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed algo-button" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseDQN">
+                                    <span class="algo-icon dqn"><i class="bi bi-cpu"></i></span>
+                                    <span class="algo-title">Deep Q-Network (DQN)</span>
+                                </button>
+                            </h2>
+                            <div id="collapseDQN" class="accordion-collapse collapse"
+                                data-bs-parent="#accordionAlgoritmos">
+                                <div class="accordion-body algo-body">
+                                    <p class="algo-description">
+                                        Es una mejora aplicada a problemas complejos y de alta envergadura, que utiliza una red neuronal para aproximar un valor a la función Q, donde la entrada se encuentra el estado y salen los valores Q para cada acción posible. 
+                                        Es importante para visión artificial, finanzas y procesamiento de lenguaje natural.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUENAS PRÁCTICAS -->
+            <div id="practicas" class="custom-card w-75 mx-auto card-animated scroll-reveal">
+                <div class="card-header-custom">
+                    <h3><i class="bi bi-check-circle"></i> Buenas Prácticas</h3>
+                </div>
+                <div class="card-body-content">
+                    <div class="practices-container">
+
+                        <!-- Práctica 1 -->
+                        <div class="practice-card practice-1">
+                            <div class="practice-header">
+                                <div class="practice-icon">
+                                    <i class="bi bi-balance-scale"></i>
+                                </div>
+                                <h5>Estabilidad del aprendizaje</h5>
+                            </div>
+                            <div class="practice-content">
+                                <p>Aquí el valor de Q o la política tengan una variabilidad grande o divergente. Por ende, se recomienda usar redes objetivo (target network) para estabilizar el objetivo; almacenar y muestrear transiciones rompiendo correlaciones temporales (experience replay) mejorando la generalizción. 
+                                Por último, se deben limitar los valores de cada gradiente que por un valor alto pueda desestabilizar la red utilizada y usar algoritmos que garanticen convergencia como el PPO u TRPO</p>
+                            </div>
+                        </div>
+
+                        <!-- Práctica 2 -->
+                        <div class="practice-card practice-2">
+                            <div class="practice-header">
+                                <div class="practice-icon">
+                                    <i class="bi bi-search"></i>
+                                </div>
+                                <h5>Tasa de exploración</h5>
+                            </div>
+                            <div class="practice-content">
+                                <p>Se enfoca en obtener un equilibrio de exploración y obtener nuevas estrategias para explotar y aprovechar de mejor manera el conocimiento del modelo. Para conseguir estos resultados, se necesitan métodos enfocados en la incertidumbre, adición de ruido para una mejor efectividad y el decremento de una variable (épsilon) mientras se aprende y adapta una nueva política más sólida.</p>
+                            </div>
+                        </div>
+
+                        <!-- Práctica 3 -->
+                        <div class="practice-card practice-3">
+                            <div class="practice-header">
+                                <div class="practice-icon">
+                                    <i class="bi bi-gift"></i>
+                                </div>
+                                <h5>Manejo de recompensas</h5>
+                            </div>
+                            <div class="practice-content">
+                                <p>Hace referencia a la señal y principal respuesta del modelo. Se pueden usar funciones que retornen señales potenciales (intermedias) sin cambiar la política principal, como acercamientos al objetivo estipulado, recibir retroalimentación de forma frecuente para facilitar el aprendizaje. También se pueden ir escalando las recompensas, 
+                                ofreciendo estabilidad y selección de hiperparámetros.</p>
+                            </div>
+                        </div>
+
+                        <!-- Práctica 4 -->
+                        <div class="practice-card practice-4">
+                            <div class="practice-header">
+                                <div class="practice-icon">
+                                    <i class="bi bi-target"></i>
+                                </div>
+                                <h5>Convergencia</h5>
+                            </div>
+                            <div class="practice-content">
+                                <p>Asegura que el agente coincida su funcionamiento a una política óptima, o en su defecto a algo aproximado, para conseguirlo se necesita un monitoreo de puntos clave como la longitud o el valor promedio de la recompensa. También se puede detener la ejecución del modelo si el rendimiento no mejora para evitar un sobreentrenamiento y por último 
+                        s       eleccionar algoritmos que sean garantes de que se cumpla la convergencia.</p>
+                            </div>
+                        </div>
+
+                        <!-- Práctica 5 -->
+                        <div class="practice-card practice-5">
+                            <div class="practice-header">
+                                <div class="practice-icon">
+                                    <i class="bi bi-arrow-repeat"></i>
+                                </div>
+                                <h5>Generalización</h5>
+                            </div>
+                            <div class="practice-content">
+                                <p>Ayuda a la efectividad ante entornos no vistos o analizados, se pueden variar factores dentro del entorno para exponer al modelo a un mayor número de escenarios y evitar un sobreajuste. 
+                                También se puede aumentar la cantidad de datos y la robustez de ellos para que pueda responder ante cualquier variación, poner a prueba al algoritmo a diferentes entornos al conocido junto a una buena estrategia para encontrar una política óptima para alcanzar el objetivo principal.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- BIBLIOGRAFÍA -->
+            <div id="bibliografia" class="custom-card w-75 mx-auto card-animated scroll-reveal">
+                <div class="card-header-custom">
+                    <h3><i class="bi bi-journal-text"></i> Bibliografía</h3>
+                </div>
+                <div class="card-body-content">
+                    <div class="bibliography-list">
+                        <div class="bibliography-item">
+                            <div class="bib-number">01</div>
+                            <div class="bib-content">
+                                <strong>¿Qué es el Aprendizaje mediante refuerzo? - Explicación del Aprendizaje mediante
+                                    refuerzo - AWS</strong>
+                                <p class="bib-source">(n.d.). Amazon Web Services, Inc.</p>
+                                <a href="https://aws.amazon.com/es/what-is/reinforcement-learning/" target="_blank"
+                                    class="bib-link">
+                                    <i class="bi bi-link-45deg"></i>
+                                    https://aws.amazon.com/es/what-is/reinforcement-learning/
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="bibliography-item">
+                            <div class="bib-number">02</div>
+                            <div class="bib-content">
+                                <strong>Aprendizaje por refuerzo</strong>
+                                <p class="bib-source">Ph.D, J. M., & Kavlakoglu, E. (2024, March 25). Ibm.com.</p>
+                                <a href="https://www.ibm.com/es-es/think/topics/reinforcement-learning" target="_blank"
+                                    class="bib-link">
+                                    <i class="bi bi-link-45deg"></i>
+                                    https://www.ibm.com/es-es/think/topics/reinforcement-learning
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="bibliography-item">
+                            <div class="bib-number">03</div>
+                            <div class="bib-content">
+                                <strong>Aprendizaje por Refuerzo | Aprende Machine Learning</strong>
+                                <p class="bib-source">Bagnato, J. I. (2020, December 24).
+                                    Www.aprendemachinelearning.com.</p>
+                                <a href="https://www.aprendemachinelearning.com/aprendizaje-por-refuerzo/"
+                                    target="_blank" class="bib-link">
+                                    <i class="bi bi-link-45deg"></i>
+                                    https://www.aprendemachinelearning.com/aprendizaje-por-refuerzo/
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="bibliography-item">
+                            <div class="bib-number">04</div>
+                            <div class="bib-content">
+                                <strong>Deep reinforcement learning</strong>
+                                <p class="bib-source">Ordóñez Bolaños, O. A. (2024).</p>
+                                <a href="https://ordonezoswaldo.com/Reinforcementlearningweb.pdf" target="_blank"
+                                    class="bib-link">
+                                    <i class="bi bi-link-45deg"></i>
+                                    https://ordonezoswaldo.com/Reinforcementlearningweb.pdf
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Resto de las tarjetas con el mismo formato mejorado... -->
+
+        </div>
+
     </div>
 
-    <div class="container mt-5">
+    <a href="/" class="btn-return position-fixed bottom-0 start-0 m-3 btn-floating">
+        </i> VOLVER AL INICIO
+    </a>
 
-        <div class="custom-card w-75 mx-auto">
-            <h3>INTRODUCCIÓN REINFORCEMENT LEARNING</h3>
-                <p>
-                    El aprendizaje por refuerzo es un tipo de ML, el cual Kavlakoglu y Ph.D explica como un aprendizaje autónomo 
-                    por parte de cada máquina, teniendo en cuenta el entorno sin la intervención o dependencia de instrucciones de un
-                    usuario humano (Ph.D & Kavlakoglu, 2024). AWS lo menciona como una imitación del aprendizaje de ensayo y error 
-                    que utilizan las personas para alcanzar sus objetivos, donde cada algoritmo descubre rutas y resultados mejores 
-                    para alcanzar metas, optimizando el funcionamiento a objetivos de largo plazo y mejor adaptación 
-                    ante entornos cambiantes (AWS, s.f).
-                </p>
-                <p>
-                    Siendo una pieza clave en dar una mayor libertad a un modelo de ML, su diferencia con los aprendizajes supervisado 
-                    y no supervisado se centran en cómo es su entrenamiento, teniendo en cuenta que en uno el modelo tiene que encontrar patrones y relaciones 
-                    y el otro necesita que el ser humano defina entrada y salida de datos. Por ende, el RL tiene un carácter más independiente y 
-                    escalable con una finalidad clara que se consigue por medio de una mejora constante hasta obtener un resultado más exacto. 
-                </p>
-        </div>
-
-        <div class="custom-card w-75 mx-auto">
-            <h3>Componentes</h3>
-                <p>
-                    Bagnato habla de 2 componentes y 3 relaciones que hay entre ellos, los cuales definen, la actuación y 
-                    retroalimentación del algoritmo (Bagnato, 2020). Los cuales son los siguientes: 
-                </p>
-                <ul>
-                    <li><strong>Agente:</strong> Hace referencia al modelo a entrenar y aprender a que tome decisiones por su cuenta.</li>
-                    <li><strong>Entorno:</strong> El entorno donde el modelo se desarrolla y ejecuta, con las limitaciones y 
-                        reglas propias del contexto y las que puedan surgir con el paso del tiempo.</li>
-                    <li><strong>Acción:</strong> Hace referencia a toda acción o decisión que tome el modelo en un momento en específico.</li>
-                    <li><strong>Estado:</strong> Indicadores de diversidad de cada factor u objeto presente dentro del entorno de trabajo.</li>
-                    <li><strong>Recompensa:</strong> Retroalimentación que recibe el modelo luego de tomar una acción, 
-                        la cual puede ser positiva o negativa dependiendo del resultado obtenido.</li>
-                </ul>
-                <p>
-                    Sin embargo, el RL presenta algunos factores aparte del ecosistema que Kavlakoglu (2025) explica como AEO (agente-entorno-objetivo), 
-                    se debe tener en cuenta algunos elementos que contribuyen y definen los problemas que tiene este tema. Estos subcomponentes 
-                    son los siguientes: 
-                </p>
-                <ul>
-                    <li><strong>Política:</strong> Este atributo es la base del aprendizaje, ya que es quien define el comportamiento del modelo. 
-                        Mapea los factores que se encuentran en el ambiente y el estado en que se encuentran en cada momento. Por lo tanto, 
-                        puede hacer que el modelo funcione como algo rudimentario o algo más complejo como detectar peatones en un vehículo autónomo.</li>
-                    <li><strong>Señal de recompensa:</strong> RSe encarga de designar el objetivo del modelo, obtener todas las señales positivas y 
-                        negativas que obtenga el algoritmo durante su ejecución, como un anecdotario cuyo objetivo es ser la guía para una mejora constante 
-                        y la maximización de recompensas de forma acumulativa.</li>
-                    <li><strong>Función de valor:</strong> La función de valor es similar a la señal de recompensa, con la diferencia en que la primera se enfoca en el largo plazo. Siendo un valor donde se mide la conveniencia
-                         de un valor o estado entre los encontrados previamente y las recompensas que le puedan seguir</li>
-                    <li><strong>Modelo del entorno:</strong> Se enfoca en la predicción del comportamiento del entorno, siendo el encargado de la planificación para determinar
-                         una línea de actuación en función de los resultados hallados.</li>
-                </ul>
-        </div>
-
-        <div class="custom-card w-75 mx-auto">
-            <h3>Principios del ciclo de aprendizaje</h3>
-                <ul>
-                    <li><strong>Estado y exploración:</strong> Se basa en la exploración y maximización de recompensas por medio de acciones 
-                        al azar para encontrar más información del entorno.</li>
-                    <li><strong>Retorno acumulado:</strong> Es la suma del total de recompensas conseguidas en un lapso de tiempo o en su defecto, a lo largo de su vida. 
-                        Mide la calidad y efectividad de una política o secuencia de acciones.</li>
-                    <li><strong>Descuento temporal:</strong> Es un ítem el cual da mayor jerarquía a las recompensas que se puedan dar en un futuro, su valor varía de 0 a 1 
-                        el cual indica si la preocupación del modelo se enfoca en algo inmediato (si vale 0) o un valor de 1 cuando las recompensas a corto
-                        y largo plazo tienen una misma jerarquía en la toma de decisiones, buscando mayormente los objetivos a largo plazo.</li>
-
-                </ul>
-        </div>
-
-        <div class="custom-card w-75 mx-auto">
-            <h3>Algoritmos principales</h3>
-                <ul>
-                    <li><strong>Q-Learning:</strong> Este algoritmo se enfoca de aprendizaje de mejor acción futura, no se enfoca del todo en la política, sino de entenderla para aplicarla después, sin importar la política de exploración ya estipulada, obteniendo un aprendizaje más efectivo y agresivo, 
-                        siendo muy útil en resolución de laberintos y gestión de inventario.</li>
-                    <li><strong>SARSA:</strong> Se enfoca en la acción real que se toma en el siguiente estado, usando dicha política como base de mejora. Siendo clave en entornos de gran 
-                        riesgo donde las probabilidades de castigo como retroalimentación son altas, se pueden encontrar en navegación de drones y sistemas de control en tiempo real.</li>
-                    <li><strong>Deep Q-Network (DQN):</strong> Es una mejora aplicada a problemas complejos y de alta envergadura, que utiliza una red neuronal para aproximar un valor a la función Q, donde la entrada se encuentra el estado y salen los valores Q para cada acción posible. 
-                        Es importante para visión artificial, finanzas y procesamiento de lenguaje natural.</li>
-                </ul>
-        </div>
-
-        <div class="custom-card w-75 mx-auto">
-            <h3>Buenas prácticas</h3>
-                <ul>
-                    <li><strong>Estabilidad del aprendizaje:</strong> Aquí el valor de Q o la política tengan una variabilidad grande o divergente. Por ende, se recomienda usar redes objetivo (target network) para estabilizar el objetivo; almacenar y muestrear transiciones rompiendo correlaciones temporales (experience replay) mejorando la generalizción. 
-                        Por último, se deben limitar los valores de cada gradiente que por un valor alto pueda desestabilizar la red utilizada y usar algoritmos que garanticen convergencia como el PPO u TRPO.</li>
-                    <li><strong>Tasa de exploración:</strong> Se enfoca en obtener un equilibrio de exploración y obtener nuevas estrategias para explotar y aprovechar de mejor manera el conocimiento del modelo. Para conseguir estos resultados, se necesitan métodos enfocados en la incertidumbre, 
-                        adición de ruido para una mejor efectividad y el decremento de una variable (épsilon) mientras se aprende y adapta una nueva política más sólida.</li>
-                    <li><strong>Manejo de recompensas:</strong> Hace referencia a la señal y principal respuesta del modelo. Se pueden usar funciones que retornen señales potenciales (intermedias) sin cambiar la política principal, como acercamientos al objetivo estipulado, recibir retroalimentación de forma frecuente para facilitar el aprendizaje. También se pueden ir escalando las recompensas, 
-                        ofreciendo estabilidad y selección de hiperparámetros.</li>
-                    <li><strong>Convergencia:</strong>Asegura que el agente coincida su funcionamiento a una política óptima, o en su defecto a algo aproximado, para conseguirlo se necesita un monitoreo de puntos clave como la longitud o el valor promedio de la recompensa. También se puede detener la ejecución del modelo si el rendimiento no mejora para evitar un sobreentrenamiento y por último 
-                        seleccionar algoritmos que sean garantes de que se cumpla la convergencia.</li>
-                    <li><strong>Generalización:</strong> Ayuda a la efectividad ante entornos no vistos o analizados, se pueden variar factores dentro del entorno para exponer al modelo a un mayor número de escenarios y evitar un sobreajuste. 
-                        También se puede aumentar la cantidad de datos y la robustez de ellos para que pueda responder ante cualquier variación, poner a prueba al algoritmo a diferentes entornos al conocido junto a una buena estrategia para encontrar una política óptima para alcanzar el objetivo principal.</li>
-                </ul>
-        </div>
-
-        <div class="custom-card w-75 mx-auto">
-            <h3>Bibliografia</h3>
-                <p>¿Qué es el Aprendizaje mediante refuerzo? - Explicación del Aprendizaje mediante refuerzo - AWS. (n.d.). 
-                    Amazon Web Services, Inc. https://aws.amazon.com/es/what-is/reinforcement-learning/</p>
-                <p>Ph.D, J. M., & Kavlakoglu, E. (2024, March 25). Aprendizaje por refuerzo. Ibm.com. 
-                    https://www.ibm.com/es-es/think/topics/reinforcement-learning</p>
-                <p>Bagnato, J. I. (2020, December 24). Aprendizaje por Refuerzo | Aprende Machine Learning. Www.aprendemachinelearning.com. 
-                    https://www.aprendemachinelearning.com/aprendizaje-por-refuerzo/</p>
-                <p>Ordóñez Bolaños, O. A. (2024). Deep reinforcement learning. https://ordonezoswaldo.com/Reinforcementlearningweb.pdf}</p>
-        </div>
-
-    </div>
-
-</div>
-
-    <a href="/" class="btn-return position-fixed bottom-0 start-0 m-3">VOLVER AL INICIO</a>
+    <button class="btn-scroll-top" id="scrollTopBtn">
+        <i class="bi bi-arrow-up-circle-fill"></i>
+    </button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.section-navigator a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                document.querySelectorAll('.section-navigator a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        window.onscroll = function () {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.querySelector(".reading-progress-bar").style.width = scrolled + "%";
+
+            if (winScroll > 300) {
+                document.getElementById("scrollTopBtn").style.display = "block";
+            } else {
+                document.getElementById("scrollTopBtn").style.display = "none";
+            }
+        };
+
+        document.getElementById("scrollTopBtn").addEventListener("click", function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 </body>
+
 </html>
